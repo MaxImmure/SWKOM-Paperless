@@ -11,6 +11,7 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("ffffb3e4-8779-4fc7-96ef-055e7a802d6d")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("PaperlessRestPlaceholder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
