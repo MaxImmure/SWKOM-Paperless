@@ -1,7 +1,8 @@
 ﻿namespace PaperlessRestService.BusinessLogic.Interfaces
 {
-    public class Class1
+    public interface ITestComponent
     {
+        int ID { get; set; }
 
     }
 }
