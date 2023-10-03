@@ -18,6 +18,8 @@ using PaperlessRestService.Attributes;
 
 using Microsoft.AspNetCore.Authorization;
 using PaperlessRestService.Models;
+using AutoMapper;
+using PaperlessRestService.BusinessLogic.Entities;
 
 namespace PaperlessRestService.Controllers
 { 
@@ -37,10 +39,13 @@ namespace PaperlessRestService.Controllers
         [ValidateModelState]
         [SwaggerOperation("CreateCorrespondent")]
         [SwaggerResponse(statusCode: 200, type: typeof(ApiCorrespondentsBody), description: "Success")]
-        public virtual IActionResult CreateCorrespondent([FromBody]ApiCorrespondentsBody body)
+        public virtual IActionResult CreateCorrespondent([FromServices] IMapper mapper, [FromBody]ApiCorrespondentsBody body)
         { 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(ApiCorrespondentsBody));
+
+            Correspondents entity = mapper.Map<Correspondents>(body);
+
             string exampleJson = null;
             exampleJson = "{\n  \"owner\" : 6,\n  \"matching_algorithm\" : 0,\n  \"is_insensitive\" : true,\n  \"name\" : \"name\",\n  \"match\" : \"match\"\n}";
             

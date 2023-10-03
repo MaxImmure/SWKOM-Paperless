@@ -8,6 +8,7 @@ namespace PaperlessRestService
         public DTOMapperProfile()
         {
             CreateMap<Models.Correspondent, Correspondents>();
+            CreateMap<Models.ApiCorrespondentsBody, Correspondents>();
             CreateMap<Models.Document, Document>();
             CreateMap<Models.DocumentType, DocumentTypes>();
         }
