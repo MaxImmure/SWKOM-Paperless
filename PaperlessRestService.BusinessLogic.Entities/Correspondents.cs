@@ -27,15 +27,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
         Group[] Groups { get; set; }
     }
 
-    public class Group
-    {
-
-    }
-
-    public class User
-    {
-
-    }
+   
     // correspondents
     // document
     // document type
