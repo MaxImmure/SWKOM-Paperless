@@ -21,10 +21,10 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using IO.Swagger.Filters;
+using PaperlessRestService.Filters;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
-
-namespace IO.Swagger
+namespace PaperlessRestService
 {
     /// <summary>
     /// Startup
@@ -90,6 +90,8 @@ namespace IO.Swagger
                     // Use [ValidateModelState] on Actions to actually validate it in C# as well!
                     c.OperationFilter<GeneratePathParamsValidationFilter>();
                 });
+
+            services.AddAutoMapper(typeof(DTOMapperProfile));
         }
 
         /// <summary>
