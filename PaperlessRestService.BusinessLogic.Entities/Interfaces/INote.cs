@@ -5,7 +5,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PaperlessRestService.BusinessLogic.Interfaces
+namespace PaperlessRestService.BusinessLogic.Entities
 {
     public interface INote
     {
