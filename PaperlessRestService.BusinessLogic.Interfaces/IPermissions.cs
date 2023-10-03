@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace PaperlessRestService.BusinessLogic.Interfaces
+﻿namespace PaperlessRestService.BusinessLogic.Interfaces
 {
     public interface IPermissions
     {
