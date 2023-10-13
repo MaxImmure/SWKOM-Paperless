@@ -1,19 +1,24 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 8000
 
-ENV DOTNET_CLI_TELEMETRY_OPTOUT 1
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["PaperlessRestService/PaperlessRestService.csproj", "PaperlessRestService/"]
+COPY ["PaperlessRestService.BusinessLogic/PaperlessRestService.BusinessLogic.csproj", "PaperlessRestService.BusinessLogic/"]
+COPY ["PaperlessRestService.BusinessLogic.Entities/PaperlessRestService.BusinessLogic.Entities.csproj", "PaperlessRestService.BusinessLogic.Entities/"]
+COPY ["PaperlessRestService.BusinessLogic.Interfaces/PaperlessRestService.BusinessLogic.Interfaces.csproj", "PaperlessRestService.BusinessLogic.Interfaces/"]
+RUN dotnet restore "PaperlessRestService/PaperlessRestService.csproj"
+COPY . .
+WORKDIR "/src/PaperlessRestService"
+RUN dotnet build "PaperlessRestService.csproj" -c Release -o /app/build
 
-# copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
+FROM build AS publish
+RUN dotnet publish "PaperlessRestService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-# copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
-
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "PaperlessRestService.dll"]
