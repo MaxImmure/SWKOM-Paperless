@@ -11,7 +11,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
 {
 
 
-    public class DocumentTypes 
+    public class DocumentType 
     {
 
         [Required]

@@ -24,6 +24,10 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using PaperlessRestService.Filters;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using FluentValidation;
+using PaperlessRestService.BusinessLogic.Entities;
+using PaperlessRestService.BusinessLogic.Validators;
 
 namespace PaperlessRestService
 {
@@ -104,6 +108,8 @@ namespace PaperlessRestService
                 });
             });
 
+
+            RegisterValidators(services);
         }
 
         /// <summary>
@@ -155,6 +161,11 @@ namespace PaperlessRestService
 
                 app.UseHsts();
             }
+        }
+
+        private void RegisterValidators(IServiceCollection services)
+        {
+            services.AddScoped<IValidator<DocumentType>, DocumentTypeValidator>();
         }
     }
 }

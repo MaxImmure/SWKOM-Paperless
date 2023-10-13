@@ -18,6 +18,7 @@ using PaperlessRestService.Attributes;
 
 using Microsoft.AspNetCore.Authorization;
 using PaperlessRestService.Models;
+using PaperlessRestService.BusinessLogic;
 
 namespace PaperlessRestService.Controllers
 { 
@@ -53,10 +54,12 @@ namespace PaperlessRestService.Controllers
         [Route("/api/documents/{id}")]
         [ValidateModelState]
         [SwaggerOperation("DeleteDocument")]
-        public virtual IActionResult DeleteDocument([FromRoute][Required]int? id)
-        { 
+        public virtual IActionResult DeleteDocument([FromServices] IDocumentCRUDLogic documentComp [FromRoute][Required]int? id)
+        {
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
+
+            documentComp.DeleteDocument();
 
             throw new NotImplementedException();
         }

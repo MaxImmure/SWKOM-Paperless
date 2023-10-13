@@ -10,7 +10,7 @@ namespace PaperlessRestService
             CreateMap<Models.Correspondent, Correspondents>();
             CreateMap<Models.ApiCorrespondentsBody, Correspondents>();
             CreateMap<Models.Document, Document>();
-            CreateMap<Models.DocumentType, DocumentTypes>();
+            CreateMap<Models.DocumentType, DocumentType>();
         }
     }
 }

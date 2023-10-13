@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Entities\PaperlessRestService.BusinessLogic.Entities.csproj" />
     <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Interfaces\PaperlessRestService.BusinessLogic.Interfaces.csproj" />
   </ItemGroup>

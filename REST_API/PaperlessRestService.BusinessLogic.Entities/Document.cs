@@ -11,7 +11,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
     {
         public int Id { get; set; }
         public Correspondents? Correspondent { get; set; } //Correspondent as Object?
-        public DocumentTypes? Document_Type { get; set; }
+        public DocumentType? Document_Type { get; set; }
         public int? Storage_Path { get; set; }
         public string Title;
         public string Content;

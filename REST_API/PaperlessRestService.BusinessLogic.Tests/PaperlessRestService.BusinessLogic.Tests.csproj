@@ -22,4 +22,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Entities\PaperlessRestService.BusinessLogic.Entities.csproj" />
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Interfaces\PaperlessRestService.BusinessLogic.Interfaces.csproj" />
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic\PaperlessRestService.BusinessLogic.csproj" />
+  </ItemGroup>
+
 </Project>
