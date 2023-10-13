@@ -1,4 +1,4 @@
-name: Paperless-API
+name: "paperless-api"
 version: "3.8"  
 
 volumes:
