@@ -1,7 +1,4 @@
-﻿using System.Reflection.Metadata;
-using System.Text.RegularExpressions;
-
-namespace PaperlessRestService.BusinessLogic.Entities
+﻿namespace PaperlessRestService.BusinessLogic.Entities
 {
     public class Correspondents
     {
@@ -12,23 +9,12 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public string Match { get; set; }
         public int MatchingAlgorithm { get; set; }
         public bool IsInsensitive { get; set; }
-        
+
         public Correspondents LastCorrespondents { get; set; }
         public int Owner { get; set; }
-        
-        public IHasPremission View { get; set; }
-        public IHasPremission Change { get; set; }
+
+        public Permission View { get; set; }
+        public Permission Change { get; set; }
 
     }
-
-    public interface IHasPremission
-    {
-        User[] Users { get; set; }
-        Group[] Groups { get; set; }
-    }
-
-   
-    // correspondents
-    // document
-    // document type
 }

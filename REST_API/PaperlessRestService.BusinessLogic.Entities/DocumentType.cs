@@ -1,17 +1,9 @@
-﻿using PaperlessRestService.BusinessLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
-
-
-    public class DocumentType 
+    public class DocumentType
     {
 
         [Required]
@@ -32,15 +24,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
 
         public int? Owner { get; set; }
 
-        public IPermissions View { get; set; }
-        public IPermissions Change { get; set; }
-       
+        public Permission View { get; set; }
+        public Permission Change { get; set; }
     }
-
-
-    
-  
-
-
-
 }

@@ -166,6 +166,13 @@ namespace PaperlessRestService
         private void RegisterValidators(IServiceCollection services)
         {
             services.AddScoped<IValidator<DocumentType>, DocumentTypeValidator>();
+            services.AddScoped<IValidator<Correspondents>, CorrespondentsValidator>();
+            services.AddScoped<IValidator<Document>, DocumentValidator>();
+            
+            services.AddScoped<IValidator<Group>, GroupValidator>();
+            services.AddScoped<IValidator<Notes>, NotesValidator>();
+            services.AddScoped<IValidator<Permission>, PermissionValidator>();
+            services.AddScoped<IValidator<User>, UserValidator>();
         }
     }
 }

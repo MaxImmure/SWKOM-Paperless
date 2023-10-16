@@ -7,13 +7,12 @@ using System.Threading.Tasks;
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
-    public interface INote
+    public class Notes
     {
         public int Id { get; set; }
         public string Note { get; set; }
         public DateTime Created { get; set; }
-        public Document Document { get; set; }
-        public User user { get; set; }
-
+        public int Document { get; set; }
+        public int User { get; set; }
     }
 }

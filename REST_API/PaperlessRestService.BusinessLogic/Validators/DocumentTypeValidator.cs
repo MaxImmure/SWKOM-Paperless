@@ -16,7 +16,8 @@ namespace PaperlessRestService.BusinessLogic.Validators
             RuleFor(dt => dt.Document_Count).NotEmpty();
             // no rule for owner
 
-            // Todo IPermissions validator for view and change
+            RuleFor(dt => dt.View).SetValidator(new PermissionValidator());
+            RuleFor(dt => dt.Change).SetValidator(new PermissionValidator());
         }
     }
 }

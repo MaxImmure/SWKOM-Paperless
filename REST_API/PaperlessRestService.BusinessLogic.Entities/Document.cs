@@ -1,11 +1,4 @@
-﻿using PaperlessRestService.BusinessLogic.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PaperlessRestService.BusinessLogic.Entities
+﻿namespace PaperlessRestService.BusinessLogic.Entities
 {
     public class Document
     {
@@ -15,7 +8,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public int? Storage_Path { get; set; }
         public string Title;
         public string Content;
-        public int[] Tags { get; set; } //Should be an array? fixed size?
+        public int[] Tags { get; set; } //Should be an array? fixed size? (there should not be any dynamic size change of the tags array, array is fine)
         public DateTime Created { get; set; }
         public DateTime Created_Date { get; set; }
         public DateTime Modified { get; set; }
@@ -27,7 +20,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
 
         public User Owner { get; set; }
         public bool User_Can_Change { get; set; }
-        public INote[] notes { get; set; }
+        public Notes[] notes { get; set; } // ToDo: Max INode does not have any implementation
 
     }
 }
