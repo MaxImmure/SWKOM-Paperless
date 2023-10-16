@@ -1,9 +1,11 @@
 ﻿
+
 namespace PaperlessRestService.BusinessLogic
 {
-
+    using PaperlessRestService.BusinessLogic.Entities;
     public interface IDocumentCRUDLogic
     {
-        bool DeleteDocument();
+        Document GetDocument(int docId);
+        bool DeleteDocument(int docId);
     }
 }

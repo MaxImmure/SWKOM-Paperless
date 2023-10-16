@@ -27,7 +27,7 @@ namespace PaperlessRestService.Controllers
     /// </summary>
     [ApiController]
     public class DocumentsApiController : ControllerBase
-    { 
+    {
         /// <summary>
         /// 
         /// </summary>
@@ -54,12 +54,17 @@ namespace PaperlessRestService.Controllers
         [Route("/api/documents/{id}")]
         [ValidateModelState]
         [SwaggerOperation("DeleteDocument")]
-        public virtual IActionResult DeleteDocument([FromServices] IDocumentCRUDLogic documentComp [FromRoute][Required]int? id)
+        public virtual IActionResult DeleteDocument([FromServices] IDocumentCRUDLogic documentComp, [FromRoute][Required]int? id)
         {
             //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(204);
 
-            documentComp.DeleteDocument();
+            if(id == 0)
+            {
+                return ControllerResponseFactory.CreateBadRequestResponse("Invalid document id");
+            }
+
+            documentComp.DeleteDocument(id.Value);
 
             throw new NotImplementedException();
         }
@@ -100,17 +105,25 @@ namespace PaperlessRestService.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetDocument")]
         [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2003), description: "Success")]
-        public virtual IActionResult GetDocument([FromRoute][Required]int? id, [FromQuery]int? page, [FromQuery]bool? fullPerms)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse2003));
-            string exampleJson = null;
-            exampleJson = "{\n  \"owner\" : 7,\n  \"archive_serial_number\" : 2,\n  \"notes\" : [ {\n    \"note\" : \"note\",\n    \"created\" : \"created\",\n    \"document\" : 1,\n    \"id\" : 7,\n    \"user\" : 1\n  }, {\n    \"note\" : \"note\",\n    \"created\" : \"created\",\n    \"document\" : 1,\n    \"id\" : 7,\n    \"user\" : 1\n  } ],\n  \"added\" : \"added\",\n  \"created\" : \"created\",\n  \"title\" : \"title\",\n  \"content\" : \"content\",\n  \"tags\" : [ 5, 5 ],\n  \"storage_path\" : 5,\n  \"permissions\" : {\n    \"view\" : {\n      \"groups\" : [ 3, 3 ],\n      \"users\" : [ 9, 9 ]\n    }\n  },\n  \"archived_file_name\" : \"archived_file_name\",\n  \"modified\" : \"modified\",\n  \"correspondent\" : 6,\n  \"original_file_name\" : \"original_file_name\",\n  \"id\" : 0,\n  \"created_date\" : \"created_date\",\n  \"document_type\" : 1\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse2003>(exampleJson)
-                        : default(InlineResponse2003);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public virtual IActionResult GetDocument(
+            [FromServices] IDocumentCRUDLogic documentComp,
+            [FromRoute][Required]int? id, 
+            [FromQuery]int? page, 
+            [FromQuery]bool? fullPerms)
+        {
+            if (id == 0)
+            {
+                return ControllerResponseFactory.CreateBadRequestResponse("Invalid document id");
+            }
+
+            var document = documentComp.GetDocument(id.Value);
+
+            if(document == null)
+            {
+                return ControllerResponseFactory.CreateBadRequestResponse("Document not found");
+            }
+
+            return ControllerResponseFactory.CreateSuccessResponse(document);
         }
 
         /// <summary>
