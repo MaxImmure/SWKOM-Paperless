@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
-    [Table("DocumentTypes")]
-    public class DocumentType
+    public class DocumentType_Copy
     {
 
         [Required]
@@ -21,6 +20,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public bool? IsInsensitive { get; set; }
 
         public int Document_Count { get; set; }
+
 
         public int? Owner { get; set; }
 

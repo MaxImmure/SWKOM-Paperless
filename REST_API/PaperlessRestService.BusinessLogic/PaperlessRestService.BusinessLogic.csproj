@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic.DataAccess\PaperlessRestService.BusinessLogic.DataAccess.csproj" />
     <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Entities\PaperlessRestService.BusinessLogic.Entities.csproj" />
     <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Interfaces\PaperlessRestService.BusinessLogic.Interfaces.csproj" />
   </ItemGroup>

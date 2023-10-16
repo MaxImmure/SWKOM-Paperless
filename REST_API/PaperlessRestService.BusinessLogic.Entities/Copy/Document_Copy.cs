@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
-    [Table("Documents")]
-    public class Document
+    public class Document_Copy
     {
         [Required]
         public int Id { get; set; }
@@ -26,19 +25,9 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public int? Storage_Path { get; set; }
         public bool User_Can_Change { get; set; }
 
-
-        public int CorrespondentId { get; set; }
         public Correspondents? Correspondent { get; set; } //Correspondent as Object?
-        
-        public int DocumentTypeId { get; set; }
         public DocumentType? Document_Type { get; set; }
-
-        public int OwnerId { get; set; }
         public User Owner { get; set; }
-
-        /// <summary>
-        /// One to Many relationship with Notes
-        /// </summary>
         public Notes[] notes { get; set; }
     }
 }

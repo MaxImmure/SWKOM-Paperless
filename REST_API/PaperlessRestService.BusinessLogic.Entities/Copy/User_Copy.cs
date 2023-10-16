@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
-    public class User
+    public class User_Copy
     {
+
+
 
     }
 }

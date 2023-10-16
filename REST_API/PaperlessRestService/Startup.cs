@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using FluentValidation;
 using PaperlessRestService.BusinessLogic.Entities;
 using PaperlessRestService.BusinessLogic.Validators;
+using PaperlessRestService.BusinessLogic.DataAccess;
 
 namespace PaperlessRestService
 {
@@ -108,8 +109,8 @@ namespace PaperlessRestService
                 });
             });
 
-
             RegisterValidators(services);
+            RegisterDAL(services);
         }
 
         /// <summary>
@@ -173,6 +174,12 @@ namespace PaperlessRestService
             services.AddScoped<IValidator<Notes>, NotesValidator>();
             services.AddScoped<IValidator<Permission>, PermissionValidator>();
             services.AddScoped<IValidator<User>, UserValidator>();
+        }
+
+        private void RegisterDAL(IServiceCollection services)
+        {
+            services.AddSingleton<IDbConnectionStringContainer>(new DbConnectionStringContainer(Configuration["ConnectionString"]));
+            services.AddSingleton<PaperlessDbContextFactory>();
         }
     }
 }
