@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+	  <Description>REST-Service welcher im Paperless System verwendet wird</Description>
+	  <TargetFramework>net6.0</TargetFramework>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <PreserveCompilationContext>true</PreserveCompilationContext>
+	  <AssemblyName>PaperlessRestService</AssemblyName>
+	  <PackageId>PaperlessRestService</PackageId>
+	  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+	  <UserSecretsId>c54c2a7e-bf4e-4c4d-a955-e61dee817654</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="5.5.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.5.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic\PaperlessRestService.BusinessLogic.csproj" />
+  </ItemGroup>
+</Project>

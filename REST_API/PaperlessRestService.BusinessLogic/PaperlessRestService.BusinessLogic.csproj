@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic.DataAccess\PaperlessRestService.BusinessLogic.DataAccess.csproj" />
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Entities\PaperlessRestService.BusinessLogic.Entities.csproj" />
+    <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Interfaces\PaperlessRestService.BusinessLogic.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

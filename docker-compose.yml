@@ -1,0 +1,31 @@
+name: "paperless-api"
+version: "3.8"  
+
+volumes:
+  paperless-api:
+
+networks:
+  internal-nw:
+     internal: true 
+  external-nw:
+     internal: false
+  
+services:
+  paperless-rest:
+    #image: if22b190/paperless:latest
+    build: REST_API/
+    volumes:
+      - paperless-api:/var/paperless-rest
+    ports:
+      - "8000:80"
+    networks: 
+      - external-nw
+
+  paperless-ui:
+    build: PaperlessUI/
+    volumes:
+      - paperless-api:/var/www
+    ports:
+      - "80:4200"
+    networks: 
+      - external-nw
