@@ -23,8 +23,5 @@ namespace PaperlessRestService.BusinessLogic.Entities
         // Foreign Key to LastCorrespondents
         public int LastCorrespondentsId { get; set; }
         public Correspondents LastCorrespondents { get; set; }
-
-        public Permission View { get; set; }
-        public Permission Change { get; set; }
     }
 }

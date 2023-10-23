@@ -11,7 +11,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
 
         public DbSet<Notes> Notes { get; set; }
 
-        public DbSet<Permission> Permissions { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<GroupUserMapping> GroupUserMappings { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -35,10 +34,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
             ConfigureGroup(modelBuilder);
             ConfigureGroupUserMapping(modelBuilder);
             ConfigureUser(modelBuilder);
-
-            // ?
-            ConfigurePermission(modelBuilder);
-
 
             base.OnModelCreating(modelBuilder);
         }
@@ -83,8 +78,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(d => d.Owner);
-
-            // ToDo David Permission foreign key is missing
         }
 
         private void ConfigureCorrespondents(ModelBuilder modelBuilder)
@@ -101,8 +94,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
                 .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(c => c.Owner);
-
-            // ToDo David Permission foreign key is missing
         }
 
         private void ConfigurePermissionNames(ModelBuilder modelBuilder)
@@ -162,10 +153,10 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
             // foreign key to Groups is set in ConfigureGroupUserMapping
         }
 
-        private void ConfigurePermission(ModelBuilder modelBuilder)
-        {
-            // ToDo David
-        }
+        //private void ConfigurePermission(ModelBuilder modelBuilder)
+        //{
+        //    // ToDo David
+        //}
 
         private void ConfigureNotes(ModelBuilder modelBuilder)
         {

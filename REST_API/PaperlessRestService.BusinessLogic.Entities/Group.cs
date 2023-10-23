@@ -14,7 +14,6 @@ namespace PaperlessRestService.BusinessLogic.Entities
     public class Group
     {
         [Required]
-
         public int? Id { get; set; }
 
         [Required]

@@ -23,8 +23,5 @@ namespace PaperlessRestService.BusinessLogic.Entities
 
 
         public int? Owner { get; set; }
-
-        public Permission View { get; set; }
-        public Permission Change { get; set; }
     }
 }
