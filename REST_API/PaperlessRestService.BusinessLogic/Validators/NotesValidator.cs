@@ -11,7 +11,7 @@ namespace PaperlessRestService.BusinessLogic.Validators
             RuleFor(n => n.Note).NotNull().NotEmpty();
             RuleFor(n => n.Created).NotEmpty();
             RuleFor(n => n.DocumentId).NotEmpty();
-            RuleFor(n => n.User).NotEmpty();
+            RuleFor(n => n.UserId).NotEmpty();
         }
     }
 }

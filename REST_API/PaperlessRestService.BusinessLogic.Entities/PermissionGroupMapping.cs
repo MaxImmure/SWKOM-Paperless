@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
-    [Table("Groups")]
-    public class Group
+    /// <summary>
+    /// Mapping table for permissions and groups
+    /// </summary>
+    [Table("PermissionGroupMappings")]
+    public class PermissionGroupMapping
     {
         [Required]
-
-        public int? Id { get; set; }
+        public int GroupId { get; set; }
 
         [Required]
-        public string Name { get; set; }
-
-        public List<PermissionGroupMapping> Permissions { get; set; }
+        public string PermissionName { get; set; }
     }
 }

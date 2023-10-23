@@ -13,7 +13,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public int DocumentId { get; set; }
 
         [Required]
-        public int User { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         public string Note { get; set; }

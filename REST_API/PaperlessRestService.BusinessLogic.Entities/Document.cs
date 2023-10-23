@@ -14,6 +14,9 @@ namespace PaperlessRestService.BusinessLogic.Entities
         
         [Required]
         public string Content { get; set; }
+
+        // ToDo: Array cannot be mapped to database like that (new Table Tags, new Table DocumentTags (mapping table), foreignkeys) 
+        [NotMapped]
         public int[] Tags { get; set; } //Should be an array? fixed size? (there should not be any dynamic size change of the tags array, array is fine)
 
         public DateTime Created { get; set; }
