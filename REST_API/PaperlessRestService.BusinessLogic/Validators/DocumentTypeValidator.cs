@@ -15,9 +15,6 @@ namespace PaperlessRestService.BusinessLogic.Validators
             RuleFor(dt => dt.IsInsensitive).NotNull();
             RuleFor(dt => dt.Document_Count).NotEmpty();
             // no rule for owner
-
-            RuleFor(dt => dt.View).SetValidator(new PermissionValidator());
-            RuleFor(dt => dt.Change).SetValidator(new PermissionValidator());
         }
     }
 }
