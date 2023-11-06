@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PaperlessRestService.BusinessLogic
 {
-    internal class ElasticSearchAccessLogic : IElasticSearchAccessLogic
+    public class ElasticSearchAccessLogic : IElasticSearchAccessLogic
     {
     }
 }

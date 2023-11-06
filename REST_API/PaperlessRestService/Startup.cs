@@ -29,6 +29,7 @@ using FluentValidation;
 using PaperlessRestService.BusinessLogic.Entities;
 using PaperlessRestService.BusinessLogic.Validators;
 using PaperlessRestService.BusinessLogic.DataAccess;
+using PaperlessRestService.BusinessLogic.DataAccess.Migrations;
 
 namespace PaperlessRestService
 {
@@ -172,7 +173,6 @@ namespace PaperlessRestService
             
             services.AddScoped<IValidator<Group>, GroupValidator>();
             services.AddScoped<IValidator<Notes>, NotesValidator>();
-            services.AddScoped<IValidator<Permission>, PermissionValidator>();
             services.AddScoped<IValidator<User>, UserValidator>();
         }
 
