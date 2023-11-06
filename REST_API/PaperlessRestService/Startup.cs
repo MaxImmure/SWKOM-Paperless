@@ -20,6 +20,8 @@ using Newtonsoft.Json.Serialization;
 using PaperlessRestService.BusinessLogic.DataAccess;
 using PaperlessRestService.BusinessLogic.Entities;
 using PaperlessRestService.BusinessLogic.Validators;
+using PaperlessRestService.BusinessLogic.DataAccess;
+using PaperlessRestService.BusinessLogic.DataAccess.Migrations;
 using PaperlessRestService.Filters;
 using System;
 using System.IO;
