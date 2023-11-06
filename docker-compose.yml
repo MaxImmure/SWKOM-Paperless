@@ -47,18 +47,18 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks: 
-      - internal-nw
+      - external-nw
 
   database:
     image: postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=paperless
+      - POSTGRES_DB=Paperless 
     volumes:
       - postgres-db:/var/lib/postgresql/data
       #- ./init.sql:/docker-entrypoint-initdb.d/init.sql # ergänzung sobald wie eine sql.init file haben
     ports:
       - "5432:5432"
     networks: 
-      - internal-nw
+      - external-nw
