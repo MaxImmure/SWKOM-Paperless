@@ -30,102 +30,6 @@ namespace PaperlessRestService.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="body"></param>
-        /// <response code="200">Success</response>
-        [HttpPost]
-        [Route("/api/saved_views")]
-        [ValidateModelState]
-        [SwaggerOperation("CreateSavedViews")]
-        public virtual IActionResult CreateSavedViews([FromBody]ApiSavedViewsBody body)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="body"></param>
-        /// <response code="200">Success</response>
-        [HttpPost]
-        [Route("/api/storage_paths")]
-        [ValidateModelState]
-        [SwaggerOperation("CreateStoragePath")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20023), description: "Success")]
-        public virtual IActionResult CreateStoragePath([FromBody]ApiStoragePathsBody body)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20023));
-            string exampleJson = null;
-            exampleJson = "{\n  \"owner\" : 1,\n  \"path\" : \"path\",\n  \"matching_algorithm\" : 6,\n  \"user_can_change\" : true,\n  \"is_insensitive\" : true,\n  \"name\" : \"name\",\n  \"match\" : \"match\",\n  \"id\" : 0,\n  \"slug\" : \"slug\"\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20023>(exampleJson)
-                        : default(InlineResponse20023);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="body"></param>
-        /// <response code="200">Success</response>
-        [HttpPost]
-        [Route("/api/ui_settings")]
-        [ValidateModelState]
-        [SwaggerOperation("CreateUISettings")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20026), description: "Success")]
-        public virtual IActionResult CreateUISettings([FromBody]ApiUiSettingsBody body)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20026));
-            string exampleJson = null;
-            exampleJson = "{\n  \"success\" : true\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20026>(exampleJson)
-                        : default(InlineResponse20026);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <response code="204">Success</response>
-        [HttpDelete]
-        [Route("/api/storage_paths/{id}")]
-        [ValidateModelState]
-        [SwaggerOperation("DeleteStoragePath")]
-        public virtual IActionResult DeleteStoragePath([FromRoute][Required]int? id)
-        { 
-            //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(204);
-
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <response code="200">Success</response>
-        [HttpGet]
-        [Route("/ws/status")]
-        [ValidateModelState]
-        [SwaggerOperation("Get")]
-        public virtual IActionResult Get()
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
         /// <param name="id"></param>
         /// <response code="200">Success</response>
         [HttpGet]
@@ -134,16 +38,9 @@ namespace PaperlessRestService.Controllers
         [SwaggerOperation("GetLog")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "Success")]
         public virtual IActionResult GetLog([FromRoute][Required]string id)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<string>));
-            string exampleJson = null;
-            exampleJson = "[ \"\", \"\" ]";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<List<string>>(exampleJson)
-                        : default(List<string>);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        {
+            string[] log = new string[] { "line1", "line2", "line3" };
+            return this.Ok(log);
         }
 
         /// <summary>
@@ -156,40 +53,8 @@ namespace PaperlessRestService.Controllers
         [SwaggerOperation("GetLogs")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<string>), description: "Success")]
         public virtual IActionResult GetLogs()
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<string>));
-            string exampleJson = null;
-            exampleJson = "[ \"\", \"\" ]";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<List<string>>(exampleJson)
-                        : default(List<string>);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <response code="200">Success</response>
-        [HttpGet]
-        [Route("/api/saved_views")]
-        [ValidateModelState]
-        [SwaggerOperation("GetSavedViews")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20021), description: "Success")]
-        public virtual IActionResult GetSavedViews([FromQuery]int? page, [FromQuery]int? pageSize)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20021));
-            string exampleJson = null;
-            exampleJson = "{\n  \"next\" : 6,\n  \"all\" : [ 5, 5 ],\n  \"previous\" : 1,\n  \"count\" : 0,\n  \"results\" : [ {\n    \"owner\" : {\n      \"is_superuser\" : true,\n      \"is_active\" : true,\n      \"user_permissions\" : [ 9, 9 ],\n      \"is_staff\" : true,\n      \"last_login\" : \"last_login\",\n      \"last_name\" : \"last_name\",\n      \"groups\" : [ \"\", \"\" ],\n      \"password\" : \"password\",\n      \"id\" : 7,\n      \"date_joined\" : \"date_joined\",\n      \"first_name\" : \"first_name\",\n      \"email\" : \"email\",\n      \"username\" : \"username\"\n    },\n    \"user_can_change\" : true,\n    \"sort_field\" : \"sort_field\",\n    \"show_on_dashboard\" : true,\n    \"name\" : \"name\",\n    \"show_in_sidebar\" : true,\n    \"filter_rules\" : [ {\n      \"rule_type\" : 2,\n      \"value\" : \"value\"\n    }, {\n      \"rule_type\" : 2,\n      \"value\" : \"value\"\n    } ],\n    \"sort_reverse\" : true,\n    \"id\" : 5\n  }, {\n    \"owner\" : {\n      \"is_superuser\" : true,\n      \"is_active\" : true,\n      \"user_permissions\" : [ 9, 9 ],\n      \"is_staff\" : true,\n      \"last_login\" : \"last_login\",\n      \"last_name\" : \"last_name\",\n      \"groups\" : [ \"\", \"\" ],\n      \"password\" : \"password\",\n      \"id\" : 7,\n      \"date_joined\" : \"date_joined\",\n      \"first_name\" : \"first_name\",\n      \"email\" : \"email\",\n      \"username\" : \"username\"\n    },\n    \"user_can_change\" : true,\n    \"sort_field\" : \"sort_field\",\n    \"show_on_dashboard\" : true,\n    \"name\" : \"name\",\n    \"show_in_sidebar\" : true,\n    \"filter_rules\" : [ {\n      \"rule_type\" : 2,\n      \"value\" : \"value\"\n    }, {\n      \"rule_type\" : 2,\n      \"value\" : \"value\"\n    } ],\n    \"sort_reverse\" : true,\n    \"id\" : 5\n  } ]\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20021>(exampleJson)
-                        : default(InlineResponse20021);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        {
+            return this.Ok(new string[] { "All", "AppTier", "Worker" });
         }
 
         /// <summary>
@@ -203,17 +68,18 @@ namespace PaperlessRestService.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetStoragePaths")]
         [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20022), description: "Success")]
-        public virtual IActionResult GetStoragePaths([FromQuery]int? page, [FromQuery]bool? fullPerms)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20022));
-            string exampleJson = null;
-            exampleJson = "{\n  \"next\" : true,\n  \"all\" : [ 6, 6 ],\n  \"previous\" : true,\n  \"count\" : 0,\n  \"results\" : [ {\n    \"owner\" : 2,\n    \"path\" : \"path\",\n    \"matching_algorithm\" : 5,\n    \"document_count\" : 5,\n    \"is_insensitive\" : true,\n    \"permissions\" : {\n      \"view\" : {\n        \"groups\" : [ \"\", \"\" ],\n        \"users\" : [ 7, 7 ]\n      }\n    },\n    \"name\" : \"name\",\n    \"match\" : \"match\",\n    \"id\" : 1,\n    \"slug\" : \"slug\"\n  }, {\n    \"owner\" : 2,\n    \"path\" : \"path\",\n    \"matching_algorithm\" : 5,\n    \"document_count\" : 5,\n    \"is_insensitive\" : true,\n    \"permissions\" : {\n      \"view\" : {\n        \"groups\" : [ \"\", \"\" ],\n        \"users\" : [ 7, 7 ]\n      }\n    },\n    \"name\" : \"name\",\n    \"match\" : \"match\",\n    \"id\" : 1,\n    \"slug\" : \"slug\"\n  } ]\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20022>(exampleJson)
-                        : default(InlineResponse20022);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        public IActionResult GetStoragePaths()
+        {
+            var result = new
+            {
+                count = 0,
+                // next = null,
+                // previous = null,
+                all = new string[0],
+                results = new string[0]
+            };
+
+            return this.Ok(result);
         }
 
         /// <summary>
@@ -225,41 +91,188 @@ namespace PaperlessRestService.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetUISettings")]
         [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20025), description: "Success")]
-        public virtual IActionResult GetUISettings()
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20025));
-            string exampleJson = null;
-            exampleJson = "{\n  \"settings\" : {\n    \"update_checking\" : {\n      \"backend_setting\" : \"backend_setting\"\n    }\n  },\n  \"permissions\" : [ \"permissions\", \"permissions\" ],\n  \"display_name\" : \"display_name\",\n  \"user\" : {\n    \"is_superuser\" : true,\n    \"groups\" : [ \"\", \"\" ],\n    \"id\" : 0,\n    \"username\" : \"username\"\n  }\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20025>(exampleJson)
-                        : default(InlineResponse20025);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
+        public IActionResult GetUISettings()
+        {
+            string result = @"{
+            ""display_name"": ""max"",
+            ""user"": {
+                ""id"": 3,
+                ""username"": ""max"",
+                ""is_superuser"": true,
+                ""groups"": []
+            },
+            ""settings"": {
+                ""update_checking"": {
+                    ""enabled"": false,
+                    ""backend_setting"": ""default""
+                },
+                ""bulk_edit"": {
+                    ""apply_on_close"": false,
+                    ""confirmation_dialogs"": true
+                },
+                ""documentListSize"": 50,
+                ""slim_sidebar"": false,
+                ""dark_mode"": {
+                    ""use_system"": true,
+                    ""enabled"": ""false"",
+                    ""thumb_inverted"": ""false""
+                },
+                ""theme"": {
+                    ""color"": """"
+                },
+                ""document_details"": {
+                    ""native_pdf_viewer"": true
+                },
+                ""date_display"": {
+                    ""date_locale"": """",
+                    ""date_format"": ""mediumDate""
+                },
+                ""notifications"": {
+                    ""consumer_new_documents"": true,
+                    ""consumer_success"": true,
+                    ""consumer_failed"": true,
+                    ""consumer_suppress_on_dashboard"": true
+                },
+                ""comments_enabled"": true,
+                ""language"": """"
+            },
+            ""permissions"": [
+                ""view_userobjectpermission"",
+                ""delete_failure"",
+                ""view_uisettings"",
+                ""change_user"",
+                ""delete_task"",
+                ""change_group"",
+                ""change_savedviewfilterrule"",
+                ""add_ormq"",
+                ""view_contenttype"",
+                ""add_mailaccount"",
+                ""add_storagepath"",
+                ""add_document"",
+                ""change_uisettings"",
+                ""view_paperlesstask"",
+                ""change_log"",
+                ""add_comment"",
+                ""add_log"",
+                ""view_user"",
+                ""change_groupobjectpermission"",
+                ""delete_mailrule"",
+                ""view_taskresult"",
+                ""add_correspondent"",
+                ""view_savedview"",
+                ""change_correspondent"",
+                ""change_groupresult"",
+                ""delete_group"",
+                ""add_savedview"",
+                ""delete_note"",
+                ""view_permission"",
+                ""add_savedviewfilterrule"",
+                ""change_comment"",
+                ""add_session"",
+                ""change_processedmail"",
+                ""add_taskresult"",
+                ""change_document"",
+                ""add_group"",
+                ""view_log"",
+                ""change_note"",
+                ""add_success"",
+                ""change_contenttype"",
+                ""add_permission"",
+                ""change_mailrule"",
+                ""delete_schedule"",
+                ""view_savedviewfilterrule"",
+                ""view_task"",
+                ""add_token"",
+                ""delete_user"",
+                ""delete_contenttype"",
+                ""add_user"",
+                ""add_chordcounter"",
+                ""add_note"",
+                ""add_failure"",
+                ""view_session"",
+                ""add_documenttype"",
+                ""view_correspondent"",
+                ""add_paperlesstask"",
+                ""change_taskresult"",
+                ""delete_chordcounter"",
+                ""view_token"",
+                ""delete_savedview"",
+                ""delete_groupobjectpermission"",
+                ""view_schedule"",
+                ""add_processedmail"",
+                ""change_tag"",
+                ""change_userobjectpermission"",
+                ""delete_documenttype"",
+                ""delete_processedmail"",
+                ""view_mailaccount"",
+                ""delete_token"",
+                ""delete_savedviewfilterrule"",
+                ""add_tokenproxy"",
+                ""add_mailrule"",
+                ""view_documenttype"",
+                ""delete_tag"",
+                ""add_contenttype"",
+                ""add_task"",
+                ""add_schedule"",
+                ""change_token"",
+                ""change_ormq"",
+                ""delete_permission"",
+                ""delete_storagepath"",
+                ""view_tokenproxy"",
+                ""delete_logentry"",
+                ""delete_correspondent"",
+                ""delete_tokenproxy"",
+                ""change_success"",
+                ""delete_document"",
+                ""change_logentry"",
+                ""view_failure"",
+                ""add_uisettings"",
+                ""change_permission"",
+                ""change_savedview"",
+                ""delete_groupresult"",
+                ""add_groupresult"",
+                ""view_logentry"",
+                ""delete_paperlesstask"",
+                ""change_task"",
+                ""view_storagepath"",
+                ""view_groupobjectpermission"",
+                ""delete_success"",
+                ""view_groupresult"",
+                ""add_groupobjectpermission"",
+                ""delete_log"",
+                ""view_ormq"",
+                ""add_logentry"",
+                ""view_success"",
+                ""delete_ormq"",
+                ""change_paperlesstask"",
+                ""delete_uisettings"",
+                ""change_failure"",
+                ""change_session"",
+                ""view_mailrule"",
+                ""add_userobjectpermission"",
+                ""view_tag"",
+                ""delete_mailaccount"",
+                ""delete_taskresult"",
+                ""delete_session"",
+                ""change_mailaccount"",
+                ""view_comment"",
+                ""view_note"",
+                ""change_tokenproxy"",
+                ""change_storagepath"",
+                ""view_chordcounter"",
+                ""change_schedule"",
+                ""change_chordcounter"",
+                ""view_processedmail"",
+                ""add_tag"",
+                ""view_group"",
+                ""view_document"",
+                ""delete_comment"",
+                ""delete_userobjectpermission"",
+                ""change_documenttype""
+            ]
+        }";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="body"></param>
-        /// <response code="200">Success</response>
-        [HttpPut]
-        [Route("/api/storage_paths/{id}")]
-        [ValidateModelState]
-        [SwaggerOperation("UpdateStoragePath")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20024), description: "Success")]
-        public virtual IActionResult UpdateStoragePath([FromRoute][Required]int? id, [FromBody]StoragePathsIdBody body)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20024));
-            string exampleJson = null;
-            exampleJson = "{\n  \"owner\" : 5,\n  \"path\" : \"path\",\n  \"matching_algorithm\" : 6,\n  \"user_can_change\" : true,\n  \"document_count\" : 1,\n  \"is_insensitive\" : true,\n  \"name\" : \"name\",\n  \"match\" : \"match\",\n  \"id\" : 0,\n  \"slug\" : \"slug\"\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20024>(exampleJson)
-                        : default(InlineResponse20024);            //TODO: Change the data returned
-            return new ObjectResult(example);
+            return Ok(result);
         }
     }
 }
