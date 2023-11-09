@@ -40,7 +40,7 @@ namespace PaperlessRestService.Controllers
         public virtual IActionResult AckTasks([FromBody]ApiAcknowledgeTasksBody body)
         {
             return Ok();
-        }2<2.
+        }
 
         /// <summary>
         /// 
