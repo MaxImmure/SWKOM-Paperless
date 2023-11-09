@@ -156,6 +156,9 @@ namespace PaperlessRestService
 
                 app.UseHsts();
             }
+
+            AutoMigrateService migrateService = app.ApplicationServices.GetService<AutoMigrateService>();
+            migrateService.Migrate();
         }
 
         private void RegisterValidators(IServiceCollection services)
@@ -172,6 +175,8 @@ namespace PaperlessRestService
         private void RegisterDAL(IServiceCollection services)
         {
             services.AddSingleton<IDbConnectionStringContainer>(new DbConnectionStringContainer(Configuration["ConnectionString"]));
+
+            services.AddSingleton<AutoMigrateService>();
             services.AddSingleton<PaperlessDbContextFactory>();
         }
     }
