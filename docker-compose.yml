@@ -3,6 +3,7 @@ version: "3.8"
 
 volumes:
   paperless-api:
+  paperless-ui:
   rabbitmq:
   postgres-db:
 
@@ -26,9 +27,10 @@ services:
 
   paperless-ui:
     build: PaperlessUI/
+    #image: paperlessngx/paperless-ngx
     container_name: paperless-ui
     volumes:
-      - paperless-api:/var/www
+      - paperless-ui:/var/www
     ports:
       - "80:4200"
     networks: 
