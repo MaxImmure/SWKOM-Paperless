@@ -1,3 +1,4 @@
+using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
@@ -9,10 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using PaperlessRestService.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Mock_Server.Controllers;
+namespace PaperlessRestService.Controllers;
 
 public class WebSocketController : ControllerBase
 {
+    [HttpGet]
     [Route("/ws/status")]
     public async Task Get()
     {

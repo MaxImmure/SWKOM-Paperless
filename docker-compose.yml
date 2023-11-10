@@ -5,6 +5,7 @@ volumes:
   paperless-api:
   paperless-ui:
   rabbitmq:
+  minio:
   postgres-db:
 
 networks:
@@ -44,11 +45,27 @@ services:
       - rabbitmq:/var/log/rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASSWORD=admin
+      - RABBITMQ_DEFAULT_PASS=admin
     ports:
       - "5672:5672"
       - "15672:15672"
     networks: 
+      - external-nw
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    volumes:
+      - minio:/data
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=passw0rd
+      #- MINIO_Default_Bucket=paperless
+    ports: 
+      - "9000:9000"
+      - "9090:9090"
+    command: server /data --console-address ":9090"
+    networks:
       - external-nw
 
   database:

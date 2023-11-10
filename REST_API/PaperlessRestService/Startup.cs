@@ -23,6 +23,11 @@ using PaperlessRestService.BusinessLogic.Validators;
 using PaperlessRestService.Filters;
 using System;
 using System.IO;
+using Microsoft.Extensions.Options;
+using PaperlessRestService.Queue;
+using PaperlessRestService.BusinessLogic.DataAccess.Database;
+using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
+using PaperlessRestService.BusinessLogic;
 
 namespace PaperlessRestService
 {
@@ -174,10 +179,21 @@ namespace PaperlessRestService
 
         private void RegisterDAL(IServiceCollection services)
         {
-            services.AddSingleton<IDbConnectionStringContainer>(new DbConnectionStringContainer(Configuration["ConnectionString"]));
+            services.AddSingleton<IDbConnectionStringContainer>(new DbConnectionStringContainer(Configuration["DB_ConnectionString"]));
 
             services.AddSingleton<AutoMigrateService>();
             services.AddSingleton<PaperlessDbContextFactory>();
+
+            var rabbitmq = new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
+                ConnectionString: Configuration["RABBITMQ_ConnectionString"],
+                QueueName: Configuration["RABBITMQ_QueueName"])));
+            services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
+
+            //UploadDocumentLogic udl = new UploadDocumentLogic(services.BuildServiceProvider());
+            //Document d = new Document();
+            //d.Title = "test124";
+            //udl.UploadDocument(d);
+
         }
     }
 }

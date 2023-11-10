@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PaperlessRestService.BusinessLogic.DataAccess
+namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 {
     public class AutoMigrateService
     {
@@ -18,7 +18,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
 
         public void Migrate()
         {
-            using PaperlessDbContext dbContext = factory.Create();
+            //using PaperlessDbContext dbContext = factory.Create();
 
             //if (dbContext.Database.EnsureCreated())
             //{
