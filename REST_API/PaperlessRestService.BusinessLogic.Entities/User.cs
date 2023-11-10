@@ -23,6 +23,10 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public bool IsActive { get; set; }
         public bool IsSuperuser { get; set; }
 
-        public List<GroupUserMapping> Groups { get; set; }
+        public int[] Groups { get; set; }
+
+        public string[] UserPermissions { get; set; }
+        public string[] InheritedPermissions { get; set; }
+        //public List<GroupUserMapping> Groups { get; set; }
     }
 }

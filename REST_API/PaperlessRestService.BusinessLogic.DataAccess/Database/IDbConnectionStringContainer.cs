@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PaperlessRestService.BusinessLogic.DataAccess
+namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 {
     /// <summary>
     /// Object that holds a connection string

@@ -14,9 +14,6 @@ namespace PaperlessRestService.BusinessLogic.Validators
             RuleFor(c => c.MatchingAlgorithm).NotEmpty();
             RuleFor(c => c.IsInsensitive).NotEmpty();
             RuleFor(c => c.Owner).NotEmpty();
-
-            RuleFor(c => c.View).SetValidator(new PermissionValidator());
-            RuleFor(c => c.Change).SetValidator(new PermissionValidator());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PaperlessRestService.BusinessLogic.Entities;
 
-namespace PaperlessRestService.BusinessLogic.DataAccess
+namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 {
     public class PaperlessDbContext : DbContext
     {
@@ -161,7 +161,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
         private void ConfigureNotes(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Notes>()
-                .HasKey(n => new {n.Id, n.DocumentId});
+                .HasKey(n => new { n.Id, n.DocumentId });
 
             modelBuilder.Entity<Notes>()
                 .HasOne<User>()

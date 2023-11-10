@@ -37,11 +37,26 @@ namespace PaperlessRestService.Controllers
         [Route("/api/documents/bulk_edit")]
         [ValidateModelState]
         [SwaggerOperation("BulkEdit")]
-        public virtual IActionResult BulkEdit([FromBody]DocumentsBulkEditBody body)
-        { 
+        public virtual IActionResult BulkEdit([FromBody] DocumentsBulkEditBody body)
+        {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);
 
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name=""></param>
+        /// <response code="200">Success</response>
+        [HttpPost]
+        [Route("/api/documents/post_document")]
+        [ValidateModelState]
+        [SwaggerOperation("PostDocument")]
+        public virtual IActionResult PostDocument([FromBody] DocumentsPostDocumentBody body)
+        {
+            
             throw new NotImplementedException();
         }
 

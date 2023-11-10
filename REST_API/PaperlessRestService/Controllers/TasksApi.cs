@@ -38,16 +38,8 @@ namespace PaperlessRestService.Controllers
         [SwaggerOperation("AckTasks")]
         [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20020), description: "Success")]
         public virtual IActionResult AckTasks([FromBody]ApiAcknowledgeTasksBody body)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20020));
-            string exampleJson = null;
-            exampleJson = "{\n  \"result\" : 0\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20020>(exampleJson)
-                        : default(InlineResponse20020);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        {
+            return Ok();
         }
 
         /// <summary>
@@ -60,16 +52,14 @@ namespace PaperlessRestService.Controllers
         [SwaggerOperation("GetTasks")]
         [SwaggerResponse(statusCode: 200, type: typeof(List<InlineResponse20019>), description: "Success")]
         public virtual IActionResult GetTasks()
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(List<InlineResponse20019>));
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"date_done\" : \"date_done\",\n  \"result\" : \"result\",\n  \"acknowledged\" : true,\n  \"task_file_name\" : \"task_file_name\",\n  \"date_created\" : \"date_created\",\n  \"related_document\" : \"related_document\",\n  \"task_id\" : \"task_id\",\n  \"id\" : 0,\n  \"type\" : \"type\",\n  \"status\" : \"status\"\n}, {\n  \"date_done\" : \"date_done\",\n  \"result\" : \"result\",\n  \"acknowledged\" : true,\n  \"task_file_name\" : \"task_file_name\",\n  \"date_created\" : \"date_created\",\n  \"related_document\" : \"related_document\",\n  \"task_id\" : \"task_id\",\n  \"id\" : 0,\n  \"type\" : \"type\",\n  \"status\" : \"status\"\n} ]";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<List<InlineResponse20019>>(exampleJson)
-                        : default(List<InlineResponse20019>);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        {
+            Random rand = new Random();
+
+            return Ok(new List<Task> { new Task { 
+                Type = TaskType.file, 
+                DateCreated = DateTime.Now.AddDays(rand.Next(-10, 0)), 
+                DateDone = DateTime.Now.AddDays(rand.Next(-10, 0)) 
+            } });
         }
     }
 }

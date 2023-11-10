@@ -3,6 +3,10 @@ version: "3.8"
 
 volumes:
   paperless-api:
+  paperless-ui:
+  rabbitmq:
+  minio:
+  postgres-db:
 
 networks:
   internal-nw:
@@ -12,8 +16,9 @@ networks:
   
 services:
   paperless-rest:
-    #image: if22b190/paperless:latest
+    #image: if22b190/paperless:latest #ergänzung sobald dieser Container von github gebuildet und gepushed wird, könnt ihr den damit holen
     build: REST_API/
+    container_name: paperless-rest
     volumes:
       - paperless-api:/var/paperless-rest
     ports:
@@ -23,9 +28,56 @@ services:
 
   paperless-ui:
     build: PaperlessUI/
+    #image: paperlessngx/paperless-ngx
+    container_name: paperless-ui
     volumes:
-      - paperless-api:/var/www
+      - paperless-ui:/var/www
     ports:
       - "80:4200"
+    networks: 
+      - external-nw
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq/
+      - rabbitmq:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks: 
+      - external-nw
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    volumes:
+      - minio:/data
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=passw0rd
+      #- MINIO_Default_Bucket=paperless
+    ports: 
+      - "9000:9000"
+      - "9090:9090"
+    command: server /data --console-address ":9090"
+    networks:
+      - external-nw
+
+  database:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=Paperless 
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+      #- ./init.sql:/docker-entrypoint-initdb.d/init.sql # ergänzung sobald wie eine sql.init file haben
+    ports:
+      - "5432:5432"
     networks: 
       - external-nw

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace PaperlessRestService.BusinessLogic.DataAccess
+namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 {
     public class PaperlessDesignTimeDbContextFactory : IDesignTimeDbContextFactory<PaperlessDbContext>
     {

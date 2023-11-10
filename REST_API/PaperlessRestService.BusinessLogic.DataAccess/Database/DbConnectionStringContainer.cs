@@ -1,5 +1,5 @@
 ﻿
-namespace PaperlessRestService.BusinessLogic.DataAccess
+namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 {
     public class DbConnectionStringContainer : IDbConnectionStringContainer
     {
