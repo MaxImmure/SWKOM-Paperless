@@ -175,6 +175,8 @@ namespace PaperlessRestService
             services.AddScoped<IValidator<Group>, GroupValidator>();
             services.AddScoped<IValidator<Notes>, NotesValidator>();
             services.AddScoped<IValidator<User>, UserValidator>();
+
+            services.AddScoped<IUploadDocumentLogic, UploadDocumentLogic>();
         }
 
         private void RegisterDAL(IServiceCollection services)
@@ -189,7 +191,7 @@ namespace PaperlessRestService
                 QueueName: Configuration["RABBITMQ_QueueName"])));
             services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
 
-            //UploadDocumentLogic udl = new UploadDocumentLogic(services.BuildServiceProvider());
+            services.AddSingleton<UploadDocumentLogic>(new UploadDocumentLogic(services.BuildServiceProvider().GetService<RabbitmqQueueOCRJob>()));
             //Document d = new Document();
             //d.Title = "test124";
             //udl.UploadDocument(d);

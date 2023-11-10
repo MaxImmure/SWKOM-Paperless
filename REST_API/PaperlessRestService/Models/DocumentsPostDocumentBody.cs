@@ -65,7 +65,7 @@ namespace PaperlessRestService.Models
         /// Gets or Sets Document
         /// </summary>
 
-        [DataMember(Name="document")]
+        //[DataMember(Name="document")]
         public List<byte[]> Document { get; set; }
 
         /// <summary>

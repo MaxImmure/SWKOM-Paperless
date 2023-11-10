@@ -6,11 +6,12 @@ namespace PaperlessRestService.BusinessLogic
 {
     public class UploadDocumentLogic : IUploadDocumentLogic
     {
-        private IServiceProvider service;
+        private RabbitmqQueueOCRJob rabbitmq_connection;
 
-        public UploadDocumentLogic(IServiceProvider service)
+        public UploadDocumentLogic(RabbitmqQueueOCRJob job)
         {
-            this.service = service;
+            this.rabbitmq_connection = job;
+            //minio
         }
 
         public bool UploadDocument(Document document)
@@ -19,17 +20,17 @@ namespace PaperlessRestService.BusinessLogic
             return QueueDocument(document, id) && ExportDocumentToFileStorage(document, id);
         }
 
-        public bool QueueDocument(Document document, Guid id)
+        private bool QueueDocument(Document document, Guid id)
         {
-            var rabbitmq = service.GetService<RabbitmqQueueOCRJob>();
-            rabbitmq.Send(document.Title, id);
-
+            rabbitmq_connection.Send(document.Title, id); //ToDo Title gegen Path in MinIO ersetzen!
             return true;
         }
 
-        public bool ExportDocumentToFileStorage(Document document, Guid id)
+        private bool ExportDocumentToFileStorage(Document document, Guid id)
         {
-            return false;
+            return false; //ToDo MinIO Integration
         }
+
+        
     }
 }

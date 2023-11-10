@@ -19,6 +19,8 @@ using PaperlessRestService.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using PaperlessRestService.Models;
 using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.Entities;
+using Document = PaperlessRestService.BusinessLogic.Entities.Document;
 
 namespace PaperlessRestService.Controllers
 { 
@@ -54,10 +56,22 @@ namespace PaperlessRestService.Controllers
         [Route("/api/documents/post_document")]
         [ValidateModelState]
         [SwaggerOperation("PostDocument")]
-        public virtual IActionResult PostDocument([FromBody] DocumentsPostDocumentBody body)
+        public virtual IActionResult PostDocument([FromBody] DocumentsPostDocumentBody body, [FromServices] IUploadDocumentLogic uploadDocumentLogic)
         {
-            
-            throw new NotImplementedException();
+            Document doc = new Document()
+            {
+                Id = Guid.NewGuid().GetHashCode(),
+                Title = body.Title,
+                Created_Date = body.Created.GetValueOrDefault(),
+                //Document_Type = body.DocumentType.GetValueOrDefault(),
+                Added = DateTime.Now,   
+                Content = "Foo content"
+            };
+
+            uploadDocumentLogic.UploadDocument(doc);
+
+            return Ok($"/api/documents/{doc.Id}");
+
         }
 
         /// <summary>
