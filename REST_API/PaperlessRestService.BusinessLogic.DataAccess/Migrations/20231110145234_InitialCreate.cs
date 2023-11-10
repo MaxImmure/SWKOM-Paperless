@@ -50,7 +50,10 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                     DateJoined = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsStaff = table.Column<bool>(type: "boolean", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    IsSuperuser = table.Column<bool>(type: "boolean", nullable: false)
+                    IsSuperuser = table.Column<bool>(type: "boolean", nullable: false),
+                    Groups = table.Column<int[]>(type: "integer[]", nullable: true),
+                    UserPermissions = table.Column<string[]>(type: "text[]", nullable: true),
+                    InheritedPermissions = table.Column<string[]>(type: "text[]", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -147,8 +150,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                 columns: table => new
                 {
                     GroupId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    UserId1 = table.Column<int>(type: "integer", nullable: true)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,11 +167,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GroupUserMappings_Users_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "Users",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -284,11 +281,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                 name: "IX_GroupUserMappings_UserId",
                 table: "GroupUserMappings",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_GroupUserMappings_UserId1",
-                table: "GroupUserMappings",
-                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notes_DocumentId",

@@ -1,23 +1,30 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic.Entities;
+using PaperlessRestService.BusinessLogic.Repositories;
 
 namespace PaperlessRestService.BusinessLogic
 {
     public class UploadDocumentLogic : IUploadDocumentLogic
     {
-        private RabbitmqQueueOCRJob rabbitmq_connection;
-
-        public UploadDocumentLogic(RabbitmqQueueOCRJob job)
+        public UploadDocumentLogic(RabbitmqQueueOCRJob job, IDocumentRepository documentRepository)
         {
             this.rabbitmq_connection = job;
+            this.documentRepository = documentRepository;
             //minio
         }
 
         public bool UploadDocument(Document document)
         {
             Guid id = Guid.NewGuid();
-            return QueueDocument(document, id) && ExportDocumentToFileStorage(document, id);
+            bool successful = documentRepository.InsertDocument(document);
+
+            if (successful)
+            {
+                return QueueDocument(document, id) && ExportDocumentToFileStorage(document, id);
+            }
+
+            return false;
         }
 
         private bool QueueDocument(Document document, Guid id)
@@ -31,6 +38,7 @@ namespace PaperlessRestService.BusinessLogic
             return false; //ToDo MinIO Integration
         }
 
-        
+        private RabbitmqQueueOCRJob rabbitmq_connection;
+        private readonly IDocumentRepository documentRepository;
     }
 }

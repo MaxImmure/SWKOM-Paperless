@@ -28,6 +28,7 @@ using PaperlessRestService.Queue;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.Repositories;
 
 namespace PaperlessRestService
 {
@@ -191,11 +192,18 @@ namespace PaperlessRestService
                 QueueName: Configuration["RABBITMQ_QueueName"])));
             services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
 
-            services.AddSingleton<UploadDocumentLogic>(new UploadDocumentLogic(services.BuildServiceProvider().GetService<RabbitmqQueueOCRJob>()));
+            services.AddSingleton<UploadDocumentLogic>();
+
             //Document d = new Document();
             //d.Title = "test124";
             //udl.UploadDocument(d);
 
+            RegisterRepositories(services);
+        }
+
+        private void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<IDocumentRepository, DocumentRepository>();
         }
     }
 }

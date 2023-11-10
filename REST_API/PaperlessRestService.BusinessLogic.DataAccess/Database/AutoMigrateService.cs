@@ -18,12 +18,12 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 
         public void Migrate()
         {
-            //using PaperlessDbContext dbContext = factory.Create();
+            using PaperlessDbContext dbContext = factory.Create();
 
-            //if (dbContext.Database.EnsureCreated())
-            //{
-            //    dbContext.Database.Migrate();
-            //}
+            if (dbContext.Database.EnsureCreated())
+            {
+                dbContext.Database.Migrate();
+            }
         }
     }
 }

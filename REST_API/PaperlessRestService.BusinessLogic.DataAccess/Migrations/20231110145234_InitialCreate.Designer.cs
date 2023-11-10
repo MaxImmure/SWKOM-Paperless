@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
@@ -11,9 +12,11 @@ using PaperlessRestService.BusinessLogic.DataAccess.Database;
 namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
 {
     [DbContext(typeof(PaperlessDbContext))]
-    partial class PaperlessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231110145234_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,14 +191,9 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
                     b.HasKey("GroupId", "UserId");
 
                     b.HasIndex("UserId");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("GroupUserMappings");
                 });
@@ -277,6 +275,12 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
+                    b.Property<int[]>("Groups")
+                        .HasColumnType("integer[]");
+
+                    b.Property<string[]>("InheritedPermissions")
+                        .HasColumnType("text[]");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -288,6 +292,9 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("text");
+
+                    b.Property<string[]>("UserPermissions")
+                        .HasColumnType("text[]");
 
                     b.Property<string>("Username")
                         .HasColumnType("text");
@@ -361,10 +368,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PaperlessRestService.BusinessLogic.Entities.User", null)
-                        .WithMany("Groups")
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.Notes", b =>
@@ -415,11 +418,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
             modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.Group", b =>
                 {
                     b.Navigation("Permissions");
-                });
-
-            modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.User", b =>
-                {
-                    b.Navigation("Groups");
                 });
 #pragma warning restore 612, 618
         }
