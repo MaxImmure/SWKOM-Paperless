@@ -1,4 +1,4 @@
-name: "paperless-api"
+name: "paperless-api:dev"
 version: "3.8"  
 
 volumes:
@@ -9,8 +9,6 @@ volumes:
   postgres-db:
 
 networks:
-  internal-nw:
-     internal: true 
   external-nw:
      internal: false
   
@@ -24,10 +22,14 @@ services:
       - "8000:80"
     networks: 
       - external-nw
+    depends_on:
+      - rabbitmq
+      - minio
+      - database
+
 
   paperless-ui:
-    build: PaperlessUI/
-    #image: paperlessngx/paperless-ngx
+    image: if22b190/paperless-ui:latest
     container_name: paperless-ui
     volumes:
       - paperless-ui:/var/www
@@ -35,6 +37,8 @@ services:
       - "80:4200"
     networks: 
       - external-nw
+    depends_on:
+      - paperless-rest
 
   rabbitmq:
     image: rabbitmq:management

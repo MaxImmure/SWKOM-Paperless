@@ -9,33 +9,37 @@ volumes:
   postgres-db:
 
 networks:
-  internal-nw:
-     internal: true 
-  external-nw:
-     internal: false
+  frontend-nw:
+     external: true 
+  backend-nw:
+     driver: bridge
   
 services:
   paperless-rest:
-    #image: if22b190/paperless:latest #ergänzung sobald dieser Container von github gebuildet und gepushed wird, könnt ihr den damit holen
-    build: REST_API/
+    image: if22b190/paperless:latest
     container_name: paperless-rest
     volumes:
       - paperless-api:/var/paperless-rest
     ports:
       - "8000:80"
     networks: 
-      - external-nw
+      - backend-nw
+    depends_on:
+      - rabbitmq
+      - minio
+      - database
 
   paperless-ui:
-    build: PaperlessUI/
-    #image: paperlessngx/paperless-ngx
+    image: if22b190/paperless-ui:latest
     container_name: paperless-ui
     volumes:
       - paperless-ui:/var/www
     ports:
       - "80:4200"
     networks: 
-      - external-nw
+      - frontend-nw
+    depends_on:
+      - paperless-rest
 
   rabbitmq:
     image: rabbitmq:management
@@ -50,7 +54,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks: 
-      - external-nw
+      - backend-nw
 
   minio:
     image: minio/minio
@@ -66,7 +70,7 @@ services:
       - "9090:9090"
     command: server /data --console-address ":9090"
     networks:
-      - external-nw
+      - backend-nw
 
   database:
     image: postgres
@@ -80,4 +84,4 @@ services:
     ports:
       - "5432:5432"
     networks: 
-      - external-nw
+      - backend-nw
