@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with: 
-        path: REST_API
+    - uses: actions/checkout@v2
+    
+    - name: Build the Docker image
+      working-directory: REST_API
+      run: docker build . -t if22b190/paperless:latest
 
     - name: Log in into DockerHub
       uses: docker/login-action@v3
@@ -23,21 +25,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Debug
-      run: |
-        ls -R   # Print the contents of the build context
-
-    - name: extract metadata (tags, labels) for docker
-      id: meta
-      uses: docker/metadata-action@v3
-      with:
-        images: if22b190/paperless
-    
-    - name: Build the Docker image
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        file: Dockerfile
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
+    - name: Push the images to Docker Hub
+      run: docker push if22b190/paperless
