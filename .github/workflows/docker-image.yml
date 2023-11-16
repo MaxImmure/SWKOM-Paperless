@@ -2,13 +2,13 @@ name: Docker Image CI with dotnet
 
 on:
   push:
-    branches: [ "master" , "development"]
+    branches: [ "master" , "Development"]
   pull_request:
     branches: [ "master" ]
 
 jobs:
 
-  build:
+  REST-build:
 
     runs-on: ubuntu-latest
 
@@ -31,7 +31,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: ./REST_API/Dockerfile
+        file: REST_API/
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
