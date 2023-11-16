@@ -10,7 +10,7 @@ volumes:
 
 networks:
   frontend-nw:
-     external: true 
+     internal: false 
   backend-nw:
      driver: bridge
   

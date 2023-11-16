@@ -1,12 +1,12 @@
-name: "paperless-api:dev"
+name: "paperless-api-dev"
 version: "3.8"  
 
 volumes:
-  paperless-api:
+  paperless-api-dev:
   paperless-ui:
-  rabbitmq:
-  minio:
-  postgres-db:
+  rabbitmq-dev:
+  minio-dev:
+  postgres-db-dev:
 
 networks:
   external-nw:
@@ -17,7 +17,7 @@ services:
     image: if22b190/paperless:dev
     container_name: paperless-rest
     volumes:
-      - paperless-api:/var/paperless-rest
+      - paperless-api-dev:/var/paperless-rest
     ports:
       - "8000:80"
     networks: 
@@ -44,8 +44,8 @@ services:
     image: rabbitmq:management
     container_name: rabbitmq
     volumes:
-      - rabbitmq:/var/lib/rabbitmq/
-      - rabbitmq:/var/log/rabbitmq
+      - rabbitmq-dev:/var/lib/rabbitmq/
+      - rabbitmq-dev:/var/log/rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
@@ -59,7 +59,7 @@ services:
     image: minio/minio
     container_name: minio
     volumes:
-      - minio:/data
+      - minio-dev:/data
     environment:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=passw0rd
@@ -78,7 +78,7 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=Paperless 
     volumes:
-      - postgres-db:/var/lib/postgresql/data
+      - postgres-db-dev:/var/lib/postgresql/data
       #- ./init.sql:/docker-entrypoint-initdb.d/init.sql # ergänzung sobald wie eine sql.init file haben
     ports:
       - "5432:5432"
