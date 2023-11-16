@@ -26,4 +26,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: Push the images to Docker Hub
-      run: docker push if22b190/paperless
+      run: docker push if22b190/paperless:dev
