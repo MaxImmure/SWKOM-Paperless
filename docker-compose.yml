@@ -16,8 +16,7 @@ networks:
   
 services:
   paperless-rest:
-    #image: if22b190/paperless:latest #ergänzung sobald dieser Container von github gebuildet und gepushed wird, könnt ihr den damit holen
-    build: REST_API/
+    image: if22b190/paperless:latest
     container_name: paperless-rest
     volumes:
       - paperless-api:/var/paperless-rest
