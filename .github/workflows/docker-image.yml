@@ -30,8 +30,8 @@ jobs:
     - name: Build the Docker image
       uses: docker/build-push-action@v3
       with:
-        context: .
-        file: ./REST_API/
+        context: ./REST_API/
+        file: Dockerfile
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
