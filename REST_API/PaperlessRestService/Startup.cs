@@ -29,6 +29,8 @@ using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic;
 using PaperlessRestService.BusinessLogic.Repositories;
+using PaperlessRestService.Logging;
+using PaperlessRestService.BusinessLogic.ExceptionHandling;
 
 namespace PaperlessRestService
 {
@@ -98,7 +100,6 @@ namespace PaperlessRestService
                 });
 
             services.AddAutoMapper(typeof(DTOMapperProfile));
-
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -109,8 +110,12 @@ namespace PaperlessRestService
                 });
             });
 
+            services.AddLogging();
+
             RegisterValidators(services);
             RegisterDAL(services);
+
+            services.AddSingleton<IErrorHandler, ErrorHandler>();
         }
 
         /// <summary>
@@ -143,6 +148,8 @@ namespace PaperlessRestService
 
             //TODO: Use Https Redirection
             // app.UseHttpsRedirection();
+
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseCors();
             app.UseEndpoints(endpoints =>
