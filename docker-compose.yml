@@ -7,6 +7,7 @@ volumes:
   rabbitmq:
   minio:
   postgres-db:
+  elastic_search:
 
 networks:
   frontend-nw:
@@ -21,13 +22,14 @@ services:
     volumes:
       - paperless-api:/var/paperless-rest
     ports:
-      - "8000:80"
+      - "8081:80"
     networks: 
       - backend-nw
     depends_on:
       - rabbitmq
       - minio
       - database
+      - elastic_search
 
   paperless-ui:
     image: if22b190/paperless-ui:latest
@@ -52,7 +54,7 @@ services:
       - RABBITMQ_DEFAULT_PASS=admin
     ports:
       - "5672:5672"
-      - "15672:15672"
+      - "9093:15672"
     networks: 
       - backend-nw
 
@@ -67,13 +69,14 @@ services:
       #- MINIO_Default_Bucket=paperless
     ports: 
       - "9000:9000"
-      - "9090:9090"
+      - "9090:9001"
     command: server /data --console-address ":9090"
     networks:
       - backend-nw
 
   database:
     image: postgres
+    container_name: database
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -84,4 +87,40 @@ services:
     ports:
       - "5432:5432"
     networks: 
+      - backend-nw
+  
+  adminer:
+    image: adminer
+    depends_on: 
+      - database
+    ports:
+      - 9091:8080
+    environment:
+      ADMINER_DEFAULT_DB_DRIVER: pgsql
+      ADMINER_DEFAULT_DB_HOST: database
+    networks:
+      - backend-nw
+    
+  elastic_search:
+    image: elasticsearch:8.11.1
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=false"
+      - "xpack.security.enrollment.enabled=false"
+    ports:
+      - 9200:9200
+      #- 9300:9300 # custom binary protocol used for communications between nodes in a cluster
+    networks:
+      - backend-nw
+    volumes:
+      - elastic_search:/usr/share/elasticsearch/data
+  
+  elastic_search-ui:
+    image: kibana:8.11.1
+    ports:
+      - 9092:5601
+    networks:
       - backend-nw
