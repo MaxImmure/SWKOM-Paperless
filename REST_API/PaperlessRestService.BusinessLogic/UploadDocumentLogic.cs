@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PaperlessRestService.BusinessLogic.DataAccess;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic.Entities;
 using PaperlessRestService.BusinessLogic.ExceptionHandling;
@@ -10,9 +11,11 @@ namespace PaperlessRestService.BusinessLogic
     public class UploadDocumentLogic : IUploadDocumentLogic
     {
         public UploadDocumentLogic(
+            DALActionExcecuterMiddleware dalActionExecuter,
             RabbitmqQueueOCRJob job,
             IDocumentRepository documentRepository)
         {
+            this.dalActionExecuter = dalActionExecuter;
             this.rabbitmq_connection = job;
             this.documentRepository = documentRepository;
             //minio
@@ -24,7 +27,11 @@ namespace PaperlessRestService.BusinessLogic
 
             try
             {
-                bool successful = documentRepository.InsertDocument(document);
+                bool successful = dalActionExecuter.Execute<bool>(() =>
+                {
+                    return documentRepository.InsertDocument(document);
+                });
+                
 
                 if (successful)
                 {
@@ -58,6 +65,7 @@ namespace PaperlessRestService.BusinessLogic
             return false; //ToDo MinIO Integration
         }
 
+        private readonly DALActionExcecuterMiddleware dalActionExecuter;
         private RabbitmqQueueOCRJob rabbitmq_connection;
         private readonly IDocumentRepository documentRepository;
     }
