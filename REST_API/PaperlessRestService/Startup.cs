@@ -114,6 +114,7 @@ namespace PaperlessRestService
 
             RegisterValidators(services);
             RegisterDAL(services);
+            RegisterBusinsessLogic(services);
 
             services.AddSingleton<IErrorHandler, ErrorHandler>();
         }
@@ -193,13 +194,12 @@ namespace PaperlessRestService
 
             services.AddSingleton<AutoMigrateService>();
             services.AddSingleton<PaperlessDbContextFactory>();
+            services.AddSingleton<DALActionExcecuterMiddleware>();
 
             var rabbitmq = new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
                 ConnectionString: Configuration["RABBITMQ_ConnectionString"],
                 QueueName: Configuration["RABBITMQ_QueueName"])));
             services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
-
-            services.AddSingleton<UploadDocumentLogic>();
 
             //Document d = new Document();
             //d.Title = "test124";
@@ -211,6 +211,15 @@ namespace PaperlessRestService
         private void RegisterRepositories(IServiceCollection services)
         {
             services.AddSingleton<IDocumentRepository, DocumentRepository>();
+        }
+
+        private void RegisterBusinsessLogic(IServiceCollection services)
+        {
+            services.AddSingleton<BLActionExecuterMiddleware>();
+            services.AddSingleton<UploadDocumentLogic>();
+            services.AddSingleton<DocumentCRUDLogic>();
+            services.AddSingleton<ElasticSearchAccessLogic>();
+            services.AddSingleton<TexterkennungLogic>();
         }
     }
 }

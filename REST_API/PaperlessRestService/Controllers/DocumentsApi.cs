@@ -33,11 +33,16 @@ namespace PaperlessRestService.Controllers
     public class DocumentsApiController : ControllerBase
     {
         private readonly IErrorHandler errorHandler;
+        private readonly BLActionExecuterMiddleware actionExecuter;
         private readonly ILogger<DocumentsApiController> logger;
 
-        public DocumentsApiController(IErrorHandler errorHandler, ILogger<DocumentsApiController> logger)
+        public DocumentsApiController(
+            IErrorHandler errorHandler,
+            BLActionExecuterMiddleware actionExecuter,
+            ILogger<DocumentsApiController> logger)
         {
             this.errorHandler = errorHandler;
+            this.actionExecuter = actionExecuter;
             this.logger = logger;
         }
 
@@ -81,7 +86,11 @@ namespace PaperlessRestService.Controllers
 
             try
             {
-                uploadDocumentLogic.UploadDocument(doc);
+                actionExecuter.Execute(() =>
+                {
+                    uploadDocumentLogic.UploadDocument(doc);
+                });
+
                 return Ok($"/api/documents/{doc.Id}");
             }
             catch (Exception ex)
