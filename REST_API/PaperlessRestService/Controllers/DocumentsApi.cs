@@ -23,6 +23,7 @@ using PaperlessRestService.BusinessLogic.Entities;
 using Document = PaperlessRestService.BusinessLogic.Entities.Document;
 using PaperlessRestService.BusinessLogic.ExceptionHandling;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace PaperlessRestService.Controllers
 {
@@ -81,7 +82,8 @@ namespace PaperlessRestService.Controllers
                 Created_Date = body.Created.GetValueOrDefault(),
                 //Document_Type = body.DocumentType.GetValueOrDefault(),
                 Added = DateTime.Now,
-                Content = "Foo content"
+                Content = "Foo content",
+                Data = body.Document.First()
             };
 
             try

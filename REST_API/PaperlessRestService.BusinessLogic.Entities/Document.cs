@@ -29,6 +29,7 @@ namespace PaperlessRestService.BusinessLogic.Entities
         public int? Storage_Path { get; set; }
         public bool User_Can_Change { get; set; }
 
+        public byte[] Data { get; set; }
 
         public int CorrespondentId { get; set; }
         public Correspondents? Correspondent { get; set; } //Correspondent as Object?
