@@ -136,6 +136,7 @@ namespace PaperlessRestService
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseWebSockets();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>

@@ -31,13 +31,13 @@ namespace PaperlessRestService.BusinessLogic.Entities
 
         public byte[] Data { get; set; }
 
-        public int CorrespondentId { get; set; }
+        public int? CorrespondentId { get; set; }
         public Correspondents? Correspondent { get; set; } //Correspondent as Object?
         
-        public int DocumentTypeId { get; set; }
+        public int? DocumentTypeId { get; set; }
         public DocumentType? Document_Type { get; set; }
 
-        public int OwnerId { get; set; }
+        public int? OwnerId { get; set; }
         public User Owner { get; set; }
 
         /// <summary>

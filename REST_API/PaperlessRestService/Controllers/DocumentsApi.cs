@@ -25,6 +25,7 @@ using PaperlessRestService.BusinessLogic.ExceptionHandling;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace PaperlessRestService.Controllers
 {
@@ -74,21 +75,31 @@ namespace PaperlessRestService.Controllers
         [Route("/api/documents/post_document")]
         [ValidateModelState]
         [SwaggerOperation("PostDocument")]
-        [Consumes("multipart/form-data")]
-        public virtual IActionResult PostDocument([FromForm] DocumentsPostDocumentBody body, [FromServices] IUploadDocumentLogic uploadDocumentLogic)
+        public virtual IActionResult PostDocument([FromForm] IFormCollection body, [FromServices] IUploadDocumentLogic uploadDocumentLogic)
         {
+            IFormFile firstFile = body.Files.First();
+
             Document doc = new Document()
             {
                 Id = Guid.NewGuid().GetHashCode(),
-                Title = body.Title,
-                Created_Date = body.Created.GetValueOrDefault(),
-                //Document_Type = body.Document.First().ContentType,
-                Added = DateTime.Now
+                Title = firstFile.Name,
+                Created_Date = DateTime.Now.ToUniversalTime(),
+
+                OwnerId = null,
+                DocumentTypeId = null,
+                CorrespondentId = null,
+
+                Content = string.Empty,
+                User_Can_Change = true,
+                
+                Created = DateTime.Now.ToUniversalTime(),
+                Modified = DateTime.Now.ToUniversalTime(),
+                Added = DateTime.Now.ToUniversalTime()
             };
 
             using (MemoryStream ms = new())
             {
-                body.Document.First().CopyTo(ms);
+                body.Files.First().CopyTo(ms);
 
                 doc.Data = ms.ToArray();
             }
@@ -100,7 +111,9 @@ namespace PaperlessRestService.Controllers
                     uploadDocumentLogic.UploadDocument(doc);
                 });
 
-                return Ok($"/api/documents/{doc.Id}");
+                //string response = @"{""task_id"": """ + doc.Id + @" ""}";
+
+                return Ok(doc.Id);
             }
             catch (Exception ex)
             {
