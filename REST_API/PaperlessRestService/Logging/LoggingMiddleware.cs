@@ -22,17 +22,9 @@ namespace PaperlessRestService.Logging
         {
             LogRequest(context);
 
-            var originalBodyStream = context.Response.Body;
-            using (var responseBody = new MemoryStream())
-            {
-                context.Response.Body = responseBody;
+            await _next(context);
 
-                await _next(context);
-
-                LogResponse(context);
-
-                await responseBody.CopyToAsync(originalBodyStream);
-            }
+            LogResponse(context);
         }
 
         private void LogRequest(HttpContext context)

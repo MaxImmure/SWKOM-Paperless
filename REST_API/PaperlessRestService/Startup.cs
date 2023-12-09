@@ -216,10 +216,10 @@ namespace PaperlessRestService
         private void RegisterBusinsessLogic(IServiceCollection services)
         {
             services.AddSingleton<BLActionExecuterMiddleware>();
-            services.AddSingleton<UploadDocumentLogic>();
-            services.AddSingleton<DocumentCRUDLogic>();
-            services.AddSingleton<ElasticSearchAccessLogic>();
-            services.AddSingleton<TexterkennungLogic>();
+            services.AddSingleton<IUploadDocumentLogic, UploadDocumentLogic>();
+            services.AddSingleton<IDocumentCRUDLogic, DocumentCRUDLogic>();
+            services.AddSingleton<IElasticSearchAccessLogic, ElasticSearchAccessLogic>();
+            services.AddSingleton<ITexterkennungLogic, TexterkennungLogic>();
         }
     }
 }

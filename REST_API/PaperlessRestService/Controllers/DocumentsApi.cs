@@ -24,6 +24,7 @@ using Document = PaperlessRestService.BusinessLogic.Entities.Document;
 using PaperlessRestService.BusinessLogic.ExceptionHandling;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.IO;
 
 namespace PaperlessRestService.Controllers
 {
@@ -73,18 +74,24 @@ namespace PaperlessRestService.Controllers
         [Route("/api/documents/post_document")]
         [ValidateModelState]
         [SwaggerOperation("PostDocument")]
-        public virtual IActionResult PostDocument([FromBody] DocumentsPostDocumentBody body, [FromServices] IUploadDocumentLogic uploadDocumentLogic)
+        [Consumes("multipart/form-data")]
+        public virtual IActionResult PostDocument([FromForm] DocumentsPostDocumentBody body, [FromServices] IUploadDocumentLogic uploadDocumentLogic)
         {
             Document doc = new Document()
             {
                 Id = Guid.NewGuid().GetHashCode(),
                 Title = body.Title,
                 Created_Date = body.Created.GetValueOrDefault(),
-                //Document_Type = body.DocumentType.GetValueOrDefault(),
-                Added = DateTime.Now,
-                Content = "Foo content",
-                Data = body.Document.First()
+                //Document_Type = body.Document.First().ContentType,
+                Added = DateTime.Now
             };
+
+            using (MemoryStream ms = new())
+            {
+                body.Document.First().CopyTo(ms);
+
+                doc.Data = ms.ToArray();
+            }
 
             try
             {

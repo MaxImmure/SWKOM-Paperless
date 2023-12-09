@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace PaperlessRestService.Models
 {
@@ -66,7 +67,7 @@ namespace PaperlessRestService.Models
         /// </summary>
 
         //[DataMember(Name="document")]
-        public List<byte[]> Document { get; set; }
+        public List<IFormFile> Document { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
