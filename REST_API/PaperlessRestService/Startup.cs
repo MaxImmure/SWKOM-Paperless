@@ -31,6 +31,8 @@ using PaperlessRestService.BusinessLogic;
 using PaperlessRestService.BusinessLogic.Repositories;
 using PaperlessRestService.Logging;
 using PaperlessRestService.BusinessLogic.ExceptionHandling;
+using PaperlessRestService.BusinessLogic.DataAccess.Repositories;
+using PaperlessRestService.BusinessLogic.Interfaces.Components;
 
 namespace PaperlessRestService
 {
@@ -212,6 +214,7 @@ namespace PaperlessRestService
         private void RegisterRepositories(IServiceCollection services)
         {
             services.AddSingleton<IDocumentRepository, DocumentRepository>();
+            services.AddSingleton<ITagRepository, TagRepository>();
         }
 
         private void RegisterBusinsessLogic(IServiceCollection services)
@@ -221,6 +224,7 @@ namespace PaperlessRestService
             services.AddSingleton<IDocumentCRUDLogic, DocumentCRUDLogic>();
             services.AddSingleton<IElasticSearchAccessLogic, ElasticSearchAccessLogic>();
             services.AddSingleton<ITexterkennungLogic, TexterkennungLogic>();
+            services.AddSingleton<ITagCRUDLogic, TagCRUDLogic>();
         }
     }
 }

@@ -61,8 +61,6 @@ namespace PaperlessRestService.Models
         /// <summary>
         /// Gets or Sets Match
         /// </summary>
-        [Required]
-
         [DataMember(Name="match")]
         public string Match { get; set; }
 
@@ -81,6 +79,9 @@ namespace PaperlessRestService.Models
 
         [DataMember(Name="owner")]
         public int? Owner { get; set; }
+
+        [DataMember(Name = "set_permissions")]
+        public ApicorrespondentsidPermissions SetPermissions { get; set; }
 
         /// <summary>
         /// Returns the string presentation of the object
