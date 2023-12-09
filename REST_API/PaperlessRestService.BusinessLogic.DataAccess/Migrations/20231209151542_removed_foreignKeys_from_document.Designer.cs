@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
@@ -11,9 +12,11 @@ using PaperlessRestService.BusinessLogic.DataAccess.Database;
 namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
 {
     [DbContext(typeof(PaperlessDbContext))]
-    partial class PaperlessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231209151542_removed_foreignKeys_from_document")]
+    partial class removed_foreignKeys_from_document
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,44 +261,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                     b.ToTable("PermissionNames");
                 });
 
-            modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsInboxTag")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool?>("IsInsensitive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Match")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("MatchingAlgorithm")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("OwnerId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.ToTable("Tags");
-                });
-
             modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -440,15 +405,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
                         .HasForeignKey("PermissionName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.Tag", b =>
-                {
-                    b.HasOne("PaperlessRestService.BusinessLogic.Entities.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("PaperlessRestService.BusinessLogic.Entities.Document", b =>

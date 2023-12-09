@@ -24,7 +24,7 @@ namespace PaperlessRestService.Models
     /// 
     /// </summary>
     [DataContract]
-    public partial class InlineResponse20016 : IEquatable<InlineResponse20016>
+    public partial class GetTagsResponse : IEquatable<GetTagsResponse>
     { 
         /// <summary>
         /// Gets or Sets Count
@@ -101,7 +101,7 @@ namespace PaperlessRestService.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((InlineResponse20016)obj);
+            return obj.GetType() == GetType() && Equals((GetTagsResponse)obj);
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace PaperlessRestService.Models
         /// </summary>
         /// <param name="other">Instance of InlineResponse20016 to be compared</param>
         /// <returns>Boolean</returns>
-        public bool Equals(InlineResponse20016 other)
+        public bool Equals(GetTagsResponse other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -169,12 +169,12 @@ namespace PaperlessRestService.Models
         #region Operators
         #pragma warning disable 1591
 
-        public static bool operator ==(InlineResponse20016 left, InlineResponse20016 right)
+        public static bool operator ==(GetTagsResponse left, GetTagsResponse right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(InlineResponse20016 left, InlineResponse20016 right)
+        public static bool operator !=(GetTagsResponse left, GetTagsResponse right)
         {
             return !Equals(left, right);
         }
