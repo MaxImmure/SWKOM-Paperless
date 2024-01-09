@@ -215,6 +215,7 @@ namespace PaperlessRestService
         {
             services.AddSingleton<IDocumentRepository, DocumentRepository>();
             services.AddSingleton<ITagRepository, TagRepository>();
+            services.AddSingleton<IDocumentTagRepository, DocumentTagRepository>();
         }
 
         private void RegisterBusinsessLogic(IServiceCollection services)

@@ -19,6 +19,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
         public DbSet<PermissionName> PermissionNames { get; set; }
 
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<DocumentTagMapping> DocumentTagMappings { get; set; }
 
         public PaperlessDbContext(DbContextOptions<PaperlessDbContext> options)
             : base(options)
@@ -38,6 +39,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
             ConfigureUser(modelBuilder);
 
             ConfigureTags(modelBuilder);
+            ConfigureDocumentTagMapping(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -86,6 +88,22 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
                 .HasOne(t => t.Owner)
                 .WithMany()
                 .HasForeignKey(t => t.OwnerId);
+        }
+
+        private void ConfigureDocumentTagMapping(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DocumentTagMapping>()
+                .HasKey(d => new { d.DocumentId, d.TagId });
+
+            modelBuilder.Entity<DocumentTagMapping>()
+                .HasOne<Document>()
+                .WithMany()
+                .HasForeignKey(d => d.DocumentId);
+
+            modelBuilder.Entity<DocumentTagMapping>()
+                .HasOne<Tag>()
+                .WithMany()
+                .HasForeignKey(d => d.TagId);
         }
 
         private void ConfigureDocumentTyp(ModelBuilder modelBuilder)

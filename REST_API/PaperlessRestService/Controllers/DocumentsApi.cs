@@ -81,7 +81,6 @@ namespace PaperlessRestService.Controllers
 
             Document doc = new Document()
             {
-                Id = Guid.NewGuid().GetHashCode(),
                 Title = firstFile.Name,
                 Created_Date = DateTime.Now.ToUniversalTime(),
 
@@ -373,5 +372,81 @@ namespace PaperlessRestService.Controllers
             return new ObjectResult(example);
         }
 
+
+        [HttpPost]
+        [Route("/api/documents/{id}/tags")]
+        [ValidateModelState]
+        public IActionResult AddTagToDocument(
+            [FromRoute][Required] int id, 
+            [FromQuery][Required] int tagId,
+            [FromServices] IDocumentCRUDLogic documentLogic )
+        {
+            if(id == 0 || tagId == 0)
+            {
+                return BadRequest();
+            }
+
+            bool success = actionExecuter.Execute<bool>(() =>
+            {
+                return documentLogic.AddTagToDocument(id, tagId);
+            });
+
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ControllerResponseFactory.CreateErrorResponse("There was an error while adding the tag to the document.");
+            }
+        }
+
+        [HttpGet]
+        [Route("/api/documents/{id}/tags")]
+        [ValidateModelState]
+        public IActionResult GetTagsOfDocument(
+            [FromRoute][Required] int id,
+            [FromServices] IDocumentCRUDLogic documentLogic)
+        {
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+
+            Tag[] tags = actionExecuter.Execute<Tag[]>(() =>
+            {
+                return documentLogic.GetTagsForDocument(id);
+            });
+
+            return ControllerResponseFactory.CreateSuccessResponse(tags);
+        }
+
+        [HttpDelete]
+        [Route("/api/documents/{id}/tags")]
+        [ValidateModelState]
+        public IActionResult RemoveTagOfDocument(
+            [FromRoute][Required] int id,
+            [FromQuery][Required] int tagId,
+            [FromServices] IDocumentCRUDLogic documentLogic)
+        {
+            if (id == 0 || tagId == 0)
+            {
+                return BadRequest();
+            }
+
+            bool success = actionExecuter.Execute<bool>(() =>
+            {
+                return documentLogic.RemoveTagFromDocument(id, tagId);
+            });
+
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ControllerResponseFactory.CreateErrorResponse("There was an error while removing the tag to the document.");
+            }
+        }
     }
 }

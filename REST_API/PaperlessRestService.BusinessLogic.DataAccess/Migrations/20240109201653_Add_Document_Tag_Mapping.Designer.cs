@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
@@ -11,9 +12,11 @@ using PaperlessRestService.BusinessLogic.DataAccess.Database;
 namespace PaperlessRestService.BusinessLogic.DataAccess.Migrations
 {
     [DbContext(typeof(PaperlessDbContext))]
-    partial class PaperlessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240109201653_Add_Document_Tag_Mapping")]
+    partial class Add_Document_Tag_Mapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

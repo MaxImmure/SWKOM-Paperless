@@ -20,10 +20,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
         {
             using PaperlessDbContext dbContext = factory.Create();
 
-            if (dbContext.Database.EnsureCreated())
-            {
-                dbContext.Database.Migrate();
-            }
+            dbContext.Database.Migrate();
         }
     }
 }
