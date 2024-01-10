@@ -26,10 +26,10 @@ services:
       - rabbitmq
       - minio
       - database
-
+      - elastic_search 
 
   paperless-ui:
-    image: if22b190/paperless-ui:latest
+    image: if22b190/paperless-ui:dev
     container_name: paperless-ui
     volumes:
       - paperless-ui:/var/www
@@ -39,6 +39,9 @@ services:
       - external-nw
     depends_on:
       - paperless-rest
+    
+  paperless-services:
+    image: if22b190/paperless-services:dev
 
   rabbitmq:
     image: rabbitmq:management
@@ -59,14 +62,13 @@ services:
     image: minio/minio
     container_name: minio
     volumes:
-      - minio-dev:/data
+      - minio:/data
     environment:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=passw0rd
-      #- MINIO_Default_Bucket=paperless
     ports: 
       - "9000:9000"
-      - "9090:9090"
+      - "9090:9001"
     command: server /data --console-address ":9090"
     networks:
       - external-nw
@@ -84,3 +86,20 @@ services:
       - "5432:5432"
     networks: 
       - external-nw
+
+  elastic_search:
+    image: elasticsearch:8.11.1
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=false"
+      - "xpack.security.enrollment.enabled=false"
+    ports:
+      - 9200:9200
+      #- 9300:9300 # custom binary protocol used for communications between nodes in a cluster
+    networks:
+      - external-nw
+    volumes:
+      - elastic_search:/usr/share/elasticsearch/data

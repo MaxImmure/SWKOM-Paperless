@@ -23,16 +23,19 @@ using PaperlessRestService.BusinessLogic.Validators;
 using PaperlessRestService.Filters;
 using System;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PaperlessRestService.Queue;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.DataAccess.MinIO;
 using PaperlessRestService.BusinessLogic.Repositories;
 using PaperlessRestService.Logging;
 using PaperlessRestService.BusinessLogic.ExceptionHandling;
 using PaperlessRestService.BusinessLogic.DataAccess.Repositories;
 using PaperlessRestService.BusinessLogic.Interfaces.Components;
+using PaperlessRestService.BusinessLogic.DataAccess.Options;
 
 namespace PaperlessRestService
 {
@@ -193,20 +196,25 @@ namespace PaperlessRestService
 
         private void RegisterDAL(IServiceCollection services)
         {
-            services.AddSingleton<IDbConnectionStringContainer>(new DbConnectionStringContainer(Configuration["DB_ConnectionString"]));
+            services.Configure<DatabaseOptions>(Configuration.GetSection("DatabaseOptions"));
+            services.AddSingleton<DatabaseOptions>(sp => sp.GetRequiredService<IOptions<DatabaseOptions>>().Value);
+            services.AddSingleton<IDbConnectionStringContainer, DbConnectionStringContainer>();
 
             services.AddSingleton<AutoMigrateService>();
             services.AddSingleton<PaperlessDbContextFactory>();
             services.AddSingleton<DALActionExcecuterMiddleware>();
 
-            var rabbitmq = new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
-                ConnectionString: Configuration["RABBITMQ_ConnectionString"],
-                QueueName: Configuration["RABBITMQ_QueueName"])));
-            services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
+            services.Configure<QueueOptions>(Configuration.GetSection("RabbitMqOptions"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<QueueOptions>>().Value);
+            services.AddSingleton<IQueueOCRJob, QueueOcrJob>();
 
-            //Document d = new Document();
-            //d.Title = "test124";
-            //udl.UploadDocument(d);
+            services.Configure<MinioOptions>(Configuration.GetSection("MinioOptions"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<MinioOptions>>().Value);
+            services.AddSingleton<IMinioRepository, MinioRepository>();
+
+            services.Configure<ElasticSearchOptions>(Configuration.GetSection("ElasticSearchOptions"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<ElasticSearchOptions>>().Value);
+            //services.AddSingleton<IElasticSearchServiceAgent, ElasticSearchServiceAgent>();
 
             RegisterRepositories(services);
         }

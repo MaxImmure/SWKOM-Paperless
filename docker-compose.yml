@@ -43,6 +43,21 @@ services:
     depends_on:
       - paperless-rest
 
+  paperless-services:
+    image: if22b190/paperless-services:latest
+    container_name: paperless-services
+    volumes:
+      - paperless-api:/var/paperless-services
+    ports:
+      - "8082:8000"
+    networks:
+      - backend-nw
+    depends_on:
+      - rabbitmq
+      - minio
+      - database
+      - elastic_search
+
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -66,7 +81,7 @@ services:
     environment:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=passw0rd
-      #- MINIO_Default_Bucket=paperless
+      #- MINIO_Default_Bucket=paperless-bucket
     ports: 
       - "9000:9000"
       - "9090:9001"

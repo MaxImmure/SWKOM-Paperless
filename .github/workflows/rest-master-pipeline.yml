@@ -1,4 +1,4 @@
-name: Master-Pipeline
+name: Rest-Master-Pipeline
 
 on:
   push:
