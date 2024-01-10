@@ -100,7 +100,6 @@ namespace PaperlessRestService.Controllers
 
             Document doc = new Document()   
             {
-                Id = Guid.NewGuid().GetHashCode(),
                 Title = firstFile.FileName.Substring(0, firstFile.FileName.Length-4),
                 Original_File_Name = firstFile.FileName,
                 Created_Date = DateTime.Now.ToUniversalTime(),
