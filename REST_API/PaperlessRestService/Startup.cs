@@ -28,6 +28,7 @@ using PaperlessRestService.Queue;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.DataAccess.MinIO;
 using PaperlessRestService.BusinessLogic.Repositories;
 using PaperlessRestService.Logging;
 using PaperlessRestService.BusinessLogic.ExceptionHandling;
@@ -199,10 +200,16 @@ namespace PaperlessRestService
             services.AddSingleton<PaperlessDbContextFactory>();
             services.AddSingleton<DALActionExcecuterMiddleware>();
 
-            var rabbitmq = new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
+            services.AddSingleton<RabbitmqQueueOCRJob>(_ => new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
                 ConnectionString: Configuration["RABBITMQ_ConnectionString"],
-                QueueName: Configuration["RABBITMQ_QueueName"])));
-            services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
+                QueueName: Configuration["RABBITMQ_QueueName"]))));
+
+            services.AddSingleton<IMinioRepository>(_ => new MinioRepository(new MinioOptions(
+                endpoint: Configuration["MINIO_Endpoint"],
+                accessKey: Configuration["MINIO_AccessKey"],
+                secretKey: Configuration["MINIO_SecretKey"],
+                bucketName: Configuration["MINIO_BucketName"])));
+
 
             //Document d = new Document();
             //d.Title = "test124";

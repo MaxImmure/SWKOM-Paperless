@@ -15,10 +15,10 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
         public RabbitmqQueueOCRJob(IOptions<RabbitmqQueueOptions> options) : base(options.Value.ConnectionString, options.Value.QueueName)
         { }
 
-        public void Send(string body, Guid documentId)
+        public void Send(string body, string originalFilename)
         {
             IBasicProperties properties = base.RabbitMqChannel.CreateBasicProperties();
-            properties.CorrelationId = documentId.ToString();
+            properties.CorrelationId = originalFilename;
 
             base.RabbitMqChannel.BasicPublish(exchange: ExchangeName,
                 routingKey: $"{QueueName}.*",

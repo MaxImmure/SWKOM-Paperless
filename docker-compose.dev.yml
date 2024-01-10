@@ -59,14 +59,13 @@ services:
     image: minio/minio
     container_name: minio
     volumes:
-      - minio-dev:/data
+      - minio:/data
     environment:
       - MINIO_ROOT_USER=admin
       - MINIO_ROOT_PASSWORD=passw0rd
-      #- MINIO_Default_Bucket=paperless
     ports: 
       - "9000:9000"
-      - "9090:9090"
+      - "9090:9001"
     command: server /data --console-address ":9090"
     networks:
       - external-nw

@@ -148,10 +148,10 @@ namespace PaperlessRestService.ServiceAgents
             services.AddSingleton<PaperlessDbContextFactory>();
             services.AddSingleton<DALActionExcecuterMiddleware>();
 
-            var rabbitmq = new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
+            var rabbitmq = new RabbitmqQueueReceiver(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
                 ConnectionString: Configuration["RABBITMQ_ConnectionString"],
-                QueueName: Configuration["RABBITMQ_QueueName"])));
-            services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
+                QueueName: Configuration["RABBITMQ_QueueName"])), null);
+            services.AddSingleton<RabbitmqQueueReceiver>(rabbitmq);
 
             //Document d = new Document();
             //d.Title = "test124";
