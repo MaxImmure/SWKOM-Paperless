@@ -97,7 +97,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
 
             modelBuilder.Entity<DocumentTagMapping>()
                 .HasOne<Document>()
-                .WithMany()
+                .WithMany(d => d.TagsMapping)
                 .HasForeignKey(d => d.DocumentId);
 
             modelBuilder.Entity<DocumentTagMapping>()

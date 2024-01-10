@@ -1,4 +1,5 @@
-﻿using PaperlessRestService.BusinessLogic.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using PaperlessRestService.BusinessLogic.DataAccess;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.Entities;
 
@@ -9,6 +10,23 @@ namespace PaperlessRestService.BusinessLogic.Repositories
         public DocumentRepository(PaperlessDbContextFactory dbContextFactory)
         {
             this.dbContextFactory = dbContextFactory;
+        }
+
+        public Document GetDocument(int id)
+        {
+            using PaperlessDbContext dbContext = dbContextFactory.Create();
+
+            Document found = dbContext.Documents
+                .Include(d => d.TagsMapping)
+                .Where(d => d.Id == id)
+                .First();
+
+            if (found == null)
+            {
+                throw new Exception("Document was not found.");
+            }
+
+            return found;
         }
 
         public bool DeleteDocument(int id)
@@ -65,6 +83,7 @@ namespace PaperlessRestService.BusinessLogic.Repositories
             throw new NoRowChangedException();
         }
 
+        
         private readonly PaperlessDbContextFactory dbContextFactory;
     }
 }

@@ -52,18 +52,37 @@ namespace PaperlessRestService.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="body"></param>
+        /// <param name="id"></param>
+        /// <param name="page"></param>
+        /// <param name="fullPerms"></param>
         /// <response code="200">Success</response>
-        [HttpPost]
-        [Route("/api/documents/bulk_edit")]
+        [HttpGet]
+        [Route("/api/documents/{id}")]
         [ValidateModelState]
-        [SwaggerOperation("BulkEdit")]
-        public virtual IActionResult BulkEdit([FromBody] DocumentsBulkEditBody body)
+        [SwaggerOperation("GetDocument")]
+        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2003), description: "Success")]
+        public virtual IActionResult GetDocument(
+            [FromServices] IDocumentCRUDLogic documentComp,
+            [FromRoute][Required] int? id,
+            [FromQuery] int? page,
+            [FromQuery] bool? fullPerms)
         {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+            if (id == 0)
+            {
+                return ControllerResponseFactory.CreateBadRequestResponse("Invalid document id");
+            }
 
-            throw new NotImplementedException();
+            Document document = actionExecuter.Execute<Document>(() =>
+            {
+                return documentComp.GetDocument(id.Value);
+            });
+
+            if (document == null)
+            {
+                return ControllerResponseFactory.CreateBadRequestResponse("Document not found");
+            }
+
+            return ControllerResponseFactory.CreateSuccessResponse(document);
         }
 
         /// <summary>
@@ -132,17 +151,126 @@ namespace PaperlessRestService.Controllers
         [SwaggerOperation("DeleteDocument")]
         public virtual IActionResult DeleteDocument([FromServices] IDocumentCRUDLogic documentComp, [FromRoute][Required] int? id)
         {
-            //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(204);
-
             if (id == 0)
             {
                 return ControllerResponseFactory.CreateBadRequestResponse("Invalid document id");
             }
 
-            documentComp.DeleteDocument(id.Value);
+            bool success = actionExecuter.Execute(() =>
+            {
+                return documentComp.DeleteDocument(id.Value);
+            });
 
-            throw new NotImplementedException();
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ControllerResponseFactory.CreateErrorResponse("Error while deleting document");
+            }
+        }
+
+        [HttpPost]
+        [Route("/api/documents/{id}/tags")]
+        [ValidateModelState]
+        public IActionResult AddTagToDocument(
+            [FromRoute][Required] int id,
+            [FromQuery][Required] int tagId,
+            [FromServices] IDocumentCRUDLogic documentLogic)
+            {
+                if (id == 0 || tagId == 0)
+                {
+                    return BadRequest();
+                }
+
+                bool success = actionExecuter.Execute<bool>(() =>
+                {
+                    return documentLogic.AddTagToDocument(id, tagId);
+                });
+
+                if (success)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return ControllerResponseFactory.CreateErrorResponse("There was an error while adding the tag to the document.");
+                }
+            }
+
+        [HttpGet]
+        [Route("/api/documents/{id}/tags")]
+        [ValidateModelState]
+        public IActionResult GetTagsOfDocument(
+            [FromRoute][Required] int id,
+            [FromServices] IDocumentCRUDLogic documentLogic)
+        {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
+            Tag[] tags = actionExecuter.Execute<Tag[]>(() =>
+            {
+                return documentLogic.GetTagsForDocument(id);
+            });
+
+            return ControllerResponseFactory.CreateSuccessResponse(tags);
+        }
+
+        [HttpDelete]
+        [Route("/api/documents/{id}/tags")]
+        [ValidateModelState]
+        public IActionResult RemoveTagOfDocument(
+            [FromRoute][Required] int id,
+            [FromQuery][Required] int tagId,
+            [FromServices] IDocumentCRUDLogic documentLogic)
+        {
+            if (id == 0 || tagId == 0)
+            {
+                return BadRequest();
+            }
+
+            bool success = actionExecuter.Execute<bool>(() =>
+            {
+                return documentLogic.RemoveTagFromDocument(id, tagId);
+            });
+
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ControllerResponseFactory.CreateErrorResponse("There was an error while removing the tag to the document.");
+            }
+        }
+
+        #region Unused
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="body"></param>
+        /// <response code="200">Success</response>
+        [HttpPut]
+        [Route("/api/documents/{id}")]
+        [ValidateModelState]
+        [SwaggerOperation("UpdateDocument")]
+        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2004), description: "Success")]
+        public virtual IActionResult UpdateDocument([FromRoute][Required] int? id, [FromBody] DocumentsIdBody body)
+        {
+            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+            // return StatusCode(200, default(InlineResponse2004));
+            string exampleJson = null;
+            exampleJson = "{\n  \"owner\" : 7,\n  \"user_can_change\" : true,\n  \"archive_serial_number\" : 2,\n  \"notes\" : [ \"\", \"\" ],\n  \"added\" : \"added\",\n  \"created\" : \"created\",\n  \"title\" : \"title\",\n  \"content\" : \"content\",\n  \"tags\" : [ 5, 5 ],\n  \"storage_path\" : 5,\n  \"archived_file_name\" : \"archived_file_name\",\n  \"modified\" : \"modified\",\n  \"correspondent\" : 6,\n  \"original_file_name\" : \"original_file_name\",\n  \"id\" : 0,\n  \"created_date\" : \"created_date\",\n  \"document_type\" : 1\n}";
+
+            var example = exampleJson != null
+            ? JsonConvert.DeserializeObject<InlineResponse2004>(exampleJson)
+            : default(InlineResponse2004);            //TODO: Change the data returned
+            return new ObjectResult(example);
         }
 
         /// <summary>
@@ -169,38 +297,6 @@ namespace PaperlessRestService.Controllers
             return new ObjectResult(example);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="page"></param>
-        /// <param name="fullPerms"></param>
-        /// <response code="200">Success</response>
-        [HttpGet]
-        [Route("/api/documents/{id}")]
-        [ValidateModelState]
-        [SwaggerOperation("GetDocument")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2003), description: "Success")]
-        public virtual IActionResult GetDocument(
-            [FromServices] IDocumentCRUDLogic documentComp,
-            [FromRoute][Required] int? id,
-            [FromQuery] int? page,
-            [FromQuery] bool? fullPerms)
-        {
-            if (id == 0)
-            {
-                return ControllerResponseFactory.CreateBadRequestResponse("Invalid document id");
-            }
-
-            var document = documentComp.GetDocument(id.Value);
-
-            if (document == null)
-            {
-                return ControllerResponseFactory.CreateBadRequestResponse("Document not found");
-            }
-
-            return ControllerResponseFactory.CreateSuccessResponse(document);
-        }
 
         /// <summary>
         /// 
@@ -222,29 +318,6 @@ namespace PaperlessRestService.Controllers
             var example = exampleJson != null
             ? JsonConvert.DeserializeObject<InlineResponse2007>(exampleJson)
             : default(InlineResponse2007);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <response code="200">Success</response>
-        [HttpGet]
-        [Route("/api/documents/{id}/preview")]
-        [ValidateModelState]
-        [SwaggerOperation("GetDocumentPreview")]
-        [SwaggerResponse(statusCode: 200, type: typeof(byte[]), description: "Success")]
-        public virtual IActionResult GetDocumentPreview([FromRoute][Required] int? id)
-        {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(byte[]));
-            string exampleJson = null;
-            exampleJson = "\"\"";
-
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<byte[]>(exampleJson)
-            : default(byte[]);            //TODO: Change the data returned
             return new ObjectResult(example);
         }
 
@@ -348,105 +421,6 @@ namespace PaperlessRestService.Controllers
             return new ObjectResult(example);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="body"></param>
-        /// <response code="200">Success</response>
-        [HttpPut]
-        [Route("/api/documents/{id}")]
-        [ValidateModelState]
-        [SwaggerOperation("UpdateDocument")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2004), description: "Success")]
-        public virtual IActionResult UpdateDocument([FromRoute][Required] int? id, [FromBody] DocumentsIdBody body)
-        {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse2004));
-            string exampleJson = null;
-            exampleJson = "{\n  \"owner\" : 7,\n  \"user_can_change\" : true,\n  \"archive_serial_number\" : 2,\n  \"notes\" : [ \"\", \"\" ],\n  \"added\" : \"added\",\n  \"created\" : \"created\",\n  \"title\" : \"title\",\n  \"content\" : \"content\",\n  \"tags\" : [ 5, 5 ],\n  \"storage_path\" : 5,\n  \"archived_file_name\" : \"archived_file_name\",\n  \"modified\" : \"modified\",\n  \"correspondent\" : 6,\n  \"original_file_name\" : \"original_file_name\",\n  \"id\" : 0,\n  \"created_date\" : \"created_date\",\n  \"document_type\" : 1\n}";
-
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<InlineResponse2004>(exampleJson)
-            : default(InlineResponse2004);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-
-        [HttpPost]
-        [Route("/api/documents/{id}/tags")]
-        [ValidateModelState]
-        public IActionResult AddTagToDocument(
-            [FromRoute][Required] int id, 
-            [FromQuery][Required] int tagId,
-            [FromServices] IDocumentCRUDLogic documentLogic )
-        {
-            if(id == 0 || tagId == 0)
-            {
-                return BadRequest();
-            }
-
-            bool success = actionExecuter.Execute<bool>(() =>
-            {
-                return documentLogic.AddTagToDocument(id, tagId);
-            });
-
-            if (success)
-            {
-                return Ok();
-            }
-            else
-            {
-                return ControllerResponseFactory.CreateErrorResponse("There was an error while adding the tag to the document.");
-            }
-        }
-
-        [HttpGet]
-        [Route("/api/documents/{id}/tags")]
-        [ValidateModelState]
-        public IActionResult GetTagsOfDocument(
-            [FromRoute][Required] int id,
-            [FromServices] IDocumentCRUDLogic documentLogic)
-        {
-            if(id == 0)
-            {
-                return BadRequest();
-            }
-
-            Tag[] tags = actionExecuter.Execute<Tag[]>(() =>
-            {
-                return documentLogic.GetTagsForDocument(id);
-            });
-
-            return ControllerResponseFactory.CreateSuccessResponse(tags);
-        }
-
-        [HttpDelete]
-        [Route("/api/documents/{id}/tags")]
-        [ValidateModelState]
-        public IActionResult RemoveTagOfDocument(
-            [FromRoute][Required] int id,
-            [FromQuery][Required] int tagId,
-            [FromServices] IDocumentCRUDLogic documentLogic)
-        {
-            if (id == 0 || tagId == 0)
-            {
-                return BadRequest();
-            }
-
-            bool success = actionExecuter.Execute<bool>(() =>
-            {
-                return documentLogic.RemoveTagFromDocument(id, tagId);
-            });
-
-            if (success)
-            {
-                return Ok();
-            }
-            else
-            {
-                return ControllerResponseFactory.CreateErrorResponse("There was an error while removing the tag to the document.");
-            }
-        }
+        #endregion
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace PaperlessRestService.BusinessLogic.Entities
 {
@@ -14,10 +16,6 @@ namespace PaperlessRestService.BusinessLogic.Entities
         
         [Required]
         public string Content { get; set; }
-
-        // ToDo: Array cannot be mapped to database like that (new Table Tags, new Table DocumentTags (mapping table), foreignkeys) 
-        [NotMapped]
-        public int[] Tags { get; set; } //Should be an array? fixed size? (there should not be any dynamic size change of the tags array, array is fine)
 
         public DateTime Created { get; set; }
         public DateTime Created_Date { get; set; }
@@ -39,6 +37,12 @@ namespace PaperlessRestService.BusinessLogic.Entities
 
         public int? OwnerId { get; set; }
         public User Owner { get; set; }
+
+        [NotMapped]
+        public int[] Tags => TagsMapping?.Select(t => t.TagId)?.ToArray();
+
+        [JsonIgnore]
+        public List<DocumentTagMapping> TagsMapping { get; set; }
 
         /// <summary>
         /// One to Many relationship with Notes
