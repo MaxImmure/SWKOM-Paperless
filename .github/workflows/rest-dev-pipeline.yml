@@ -1,4 +1,4 @@
-name: Dev-Pipeline
+name: Rest-Dev-Pipeline
 
 on:
   push:

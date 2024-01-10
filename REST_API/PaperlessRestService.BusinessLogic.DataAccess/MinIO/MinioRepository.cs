@@ -1,5 +1,6 @@
 ﻿using Minio;
 using Minio.DataModel.Args;
+using PaperlessRestService.BusinessLogic.DataAccess.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.MinIO
             await _minioClient.RemoveObjectAsync(removeObjectArgs);
         }
 
+        //ToDo: Fix Method (Output -> Error Messages in Extra Header and returns true on failure)
         public async Task<bool> FileExistsAsync(string filePath)
         {
             var statObjectArgs = new StatObjectArgs().WithBucket(_bucketName).WithObject(filePath);

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\PaperlessRestService.BusinessLogic.Entities\PaperlessRestService.BusinessLogic.Entities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ElasticSearch\" />
+  </ItemGroup>
+
 </Project>
