@@ -11,6 +11,9 @@ namespace PaperlessRestService.BusinessLogic
     {
         public T Execute<T>(Func<T> action)
         {
+            if(action == null)
+                throw new ArgumentNullException(nameof(action));
+
             try
             {
                 return action();
@@ -23,13 +26,16 @@ namespace PaperlessRestService.BusinessLogic
 
         public void Execute(Action action)
         {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
             try
             {
                 action();
             }
-            catch (BLException ex)
+            catch (Exception ex)
             {
-                throw new DALException($"Error while executing Action of", ex);
+                throw new BLException($"Error while executing Action of", ex);
             }
         }
     }

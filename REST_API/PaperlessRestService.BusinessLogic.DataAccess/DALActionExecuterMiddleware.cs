@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace PaperlessRestService.BusinessLogic.DataAccess
 {
-    public class DALActionExcecuterMiddleware
+    public class DALActionExecuterMiddleware
     {
         public T Execute<T>(Func<T> action)
         {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
             try
             {
                 return action();
@@ -27,6 +30,9 @@ namespace PaperlessRestService.BusinessLogic.DataAccess
 
         public void Execute(Action action)
         {
+            if (action == null)
+                throw new ArgumentNullException(nameof(action));
+
             try
             {
                 action();

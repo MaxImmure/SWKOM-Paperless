@@ -13,6 +13,11 @@ namespace PaperlessRestService.BusinessLogic.Validators
         public UserValidator()
         {
             // no rules yet
+            RuleFor(u => u.Id).NotEmpty();
+            RuleFor(u => u.Email).NotNull().NotEmpty();
+            RuleFor(u => u.FirstName).NotNull().NotEmpty();
+            RuleFor(u => u.LastName).NotNull().NotEmpty();
+            RuleFor(u => u.IsStaff).NotNull();
         }
     }
 }
