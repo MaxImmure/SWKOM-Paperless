@@ -1,4 +1,4 @@
-﻿namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
+﻿namespace PaperlessRestService.ServiceAgents.Interfaces
 {
     public class QueueReceivedEventArgs
     {

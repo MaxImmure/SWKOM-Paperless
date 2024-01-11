@@ -9,8 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PaperlessRestService.ServiceAgents.Interfaces;
 
-namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
+namespace PaperlessRestService.ServiceAgents
 {
     public class QueueReceiver : QueueClient, IQueueReceiver
     {
@@ -21,8 +22,8 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
 
         public QueueReceiver(IOptions<QueueOptions> options, ILogger<QueueReceiver> logger) : base(options.Value.ConnectionString, options.Value.QueueName)
         {
-            _consumer = new EventingBasicConsumer(base.RabbitMqChannel);
-            this._logger = logger;
+            _consumer = new EventingBasicConsumer(RabbitMqChannel);
+            _logger = logger;
         }
 
         public void StartReceive()
@@ -34,7 +35,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
                 try
                 {
                     // received message  
-                    var content = System.Text.Encoding.UTF8.GetString(ea.Body.ToArray());
+                    var content = Encoding.UTF8.GetString(ea.Body.ToArray());
                     var guid = Guid.Parse(ea.BasicProperties.CorrelationId);
 
                     _logger.LogInformation($"Received message {guid}");
@@ -101,10 +102,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
 
         private void HandleMessage(string content, Guid guid)
         {
-            if (this.OnReceived != null)
-            {
-                this.OnReceived(this, new QueueReceivedEventArgs(content, guid));
-            }
+            OnReceived?.Invoke(this, new QueueReceivedEventArgs(content, guid));
         }
 
 

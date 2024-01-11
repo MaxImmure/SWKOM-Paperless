@@ -26,6 +26,7 @@ using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Elastic.Clients.Elasticsearch;
 
 namespace PaperlessRestService.Controllers
 {
@@ -83,6 +84,29 @@ namespace PaperlessRestService.Controllers
             }
 
             return ControllerResponseFactory.CreateSuccessResponse(document);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="query"></param>
+        /// <param name="ordering"></param>
+        /// <param name="tagsIdAll"></param>
+        /// <param name="documentTypeId"></param>
+        /// <param name="correspondentId"></param>
+        /// <param name="truncateContent"></param>
+        /// <response code="200">Success</response>
+        [HttpGet]
+        [Route("/api/documents")]
+        [ValidateModelState]
+        [SwaggerOperation("GetDocuments")]
+        public virtual IActionResult GetDocuments([FromServices] ISearchDocumentLogic searchIndex, [FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string query, [FromQuery] string ordering, [FromQuery] List<int?> tagsIdAll, [FromQuery] int? documentTypeId, [FromQuery] int? correspondentId, [FromQuery] bool? truncateContent)
+        {
+            var result = searchIndex.SearchDocument(query);
+
+            return ControllerResponseFactory.CreateSuccessResponse(result);
         }
 
         /// <summary>

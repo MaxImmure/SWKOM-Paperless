@@ -29,6 +29,7 @@ using PaperlessRestService.Queue;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.DataAccess.ElasticSearch;
 using PaperlessRestService.BusinessLogic.DataAccess.MinIO;
 using PaperlessRestService.BusinessLogic.Repositories;
 using PaperlessRestService.Logging;
@@ -214,7 +215,7 @@ namespace PaperlessRestService
 
             services.Configure<ElasticSearchOptions>(Configuration.GetSection("ElasticSearchOptions"));
             services.AddSingleton(sp => sp.GetRequiredService<IOptions<ElasticSearchOptions>>().Value);
-            //services.AddSingleton<IElasticSearchServiceAgent, ElasticSearchServiceAgent>();
+            services.AddSingleton<ISearchIndex, ElasticSearchIndex>();
 
             RegisterRepositories(services);
         }
@@ -231,8 +232,7 @@ namespace PaperlessRestService
             services.AddSingleton<BLActionExecuterMiddleware>();
             services.AddSingleton<IUploadDocumentLogic, UploadDocumentLogic>();
             services.AddSingleton<IDocumentCRUDLogic, DocumentCRUDLogic>();
-            services.AddSingleton<IElasticSearchAccessLogic, ElasticSearchAccessLogic>();
-            services.AddSingleton<ITexterkennungLogic, TexterkennungLogic>();
+            services.AddSingleton<ISearchDocumentLogic,  SearchDocumentLogic>();
             services.AddSingleton<ITagCRUDLogic, TagCRUDLogic>();
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
+namespace PaperlessRestService.ServiceAgents.Interfaces
 {
     public interface IQueueReceiver
     {

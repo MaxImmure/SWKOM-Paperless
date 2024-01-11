@@ -54,7 +54,7 @@ namespace PaperlessRestService.BusinessLogic
         {
             try
             {
-                rabbitmq_connection.Send("paperless/" + document.Original_File_Name, document.Title);
+                rabbitmq_connection.Send(document.Original_File_Name);
             }
             catch(Exception ex)
             {

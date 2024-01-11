@@ -8,6 +8,6 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ
 {
     public interface IQueueOCRJob
     {
-        void Send(string body, string originalFilename);
+        void Send(string body);
     }
 }
