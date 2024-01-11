@@ -12,9 +12,9 @@ namespace PaperlessRestService.BusinessLogic.Tests
         public TagCRUDTests()
         {
             ITagRepository tagRepository = new MockTagRepository();
-            DALActionExecuterMiddleware blExecuter = new DALActionExecuterMiddleware();
+            DALActionExecuterMiddleware dalExecuter = new DALActionExecuterMiddleware();
 
-            tagLogic = new TagCRUDLogic(tagRepository, blExecuter);
+            tagLogic = new TagCRUDLogic(tagRepository, dalExecuter);
         }
 
         [Fact]

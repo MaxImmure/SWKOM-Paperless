@@ -17,7 +17,7 @@ namespace PaperlessRestService.BusinessLogic
     public class SearchDocumentLogic : ISearchDocumentLogic
     {
         public SearchDocumentLogic(
-            DALActionExcecuterMiddleware dalActionExecuter,
+            DALActionExecuterMiddleware dalActionExecuter,
             ISearchIndex elasticSearchIndex,
             IDocumentRepository documentRepository)
         {
@@ -39,7 +39,7 @@ namespace PaperlessRestService.BusinessLogic
             });
         }
 
-        private readonly DALActionExcecuterMiddleware dalActionExecuter;
+        private readonly DALActionExecuterMiddleware dalActionExecuter;
         private ISearchIndex elasticSearchIndex;
         private readonly IDocumentRepository documentRepository;
     }

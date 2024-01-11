@@ -1,4 +1,6 @@
-﻿using PaperlessRestService.BusinessLogic.DataAccess;
+﻿using Microsoft.Extensions.Logging;
+using PaperlessRestService.BusinessLogic.DataAccess;
+using PaperlessRestService.BusinessLogic.ExceptionHandling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,11 @@ namespace PaperlessRestService.BusinessLogic
 {
     public sealed class BLActionExecuterMiddleware
     {
+        public BLActionExecuterMiddleware(ILogger<BLActionExecuterMiddleware> logger)
+        {
+            this.logger = logger;
+        }
+
         public T Execute<T>(Func<T> action)
         {
             if(action == null)
@@ -35,8 +42,13 @@ namespace PaperlessRestService.BusinessLogic
             }
             catch (Exception ex)
             {
-                throw new BLException($"Error while executing Action of", ex);
+                BLException blException = new BLException($"Error while executing Action of", ex);
+                errorHandler.HandleError(blException, logger);
+                throw blException;
             }
         }
+
+        private IErrorHandler errorHandler = new ErrorHandler();
+        private readonly ILogger<BLActionExecuterMiddleware> logger;
     }
 }

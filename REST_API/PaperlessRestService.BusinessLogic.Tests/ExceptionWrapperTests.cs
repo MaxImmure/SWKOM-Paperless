@@ -1,4 +1,6 @@
-﻿using PaperlessRestService.BusinessLogic.DataAccess;
+﻿using Microsoft.Extensions.Logging;
+using PaperlessRestService.BusinessLogic.DataAccess;
+using PaperlessRestService.BusinessLogic.Tests.Mock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +13,9 @@ namespace PaperlessRestService.BusinessLogic.Tests
     {
         public ExceptionWrapperTests()
         {
+            MockLogger<BLActionExecuterMiddleware> mockedBlLogger = new MockLogger<BLActionExecuterMiddleware>();
+            blExecuter = new BLActionExecuterMiddleware(mockedBlLogger);
             dalExecuter = new DALActionExecuterMiddleware();
-            blExecuter = new BLActionExecuterMiddleware();
         }
 
         [Fact]
