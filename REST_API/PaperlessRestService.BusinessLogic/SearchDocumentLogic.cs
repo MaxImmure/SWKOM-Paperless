@@ -25,9 +25,12 @@ namespace PaperlessRestService.BusinessLogic
             this.documentRepository = documentRepository;
         }
 
-        public Document SearchDocument(string query)
+        public IEnumerable<Document> SearchDocument(string query)
         {
-            return dalActionExecuter.Execute<Document>(elasticSearchIndex.SearchDocumentAsync(query));
+            return dalActionExecuter.Execute<IEnumerable<Document>>(() =>
+            {
+                return elasticSearchIndex.SearchDocumentAsync(query);
+            });
         }
 
         private readonly DALActionExcecuterMiddleware dalActionExecuter;

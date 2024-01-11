@@ -9,6 +9,6 @@ namespace PaperlessRestService.BusinessLogic
 {
     public interface ISearchDocumentLogic
     {
-        public Document? SearchDocument(string query);
+        public IEnumerable<Document>? SearchDocument(string query);
     }
 }
