@@ -7,7 +7,7 @@ namespace PaperlessRestService.BusinessLogic
 {
     public sealed class TagCRUDLogic : ITagCRUDLogic
     {
-        public TagCRUDLogic(ITagRepository tagRepository, DALActionExcecuterMiddleware actionExcecuter)
+        public TagCRUDLogic(ITagRepository tagRepository, DALActionExecuterMiddleware actionExcecuter)
         {
             this.tagRepository = tagRepository;
             this.actionExcecuter = actionExcecuter;
@@ -54,6 +54,6 @@ namespace PaperlessRestService.BusinessLogic
         }
 
         private readonly ITagRepository tagRepository;
-        private readonly DALActionExcecuterMiddleware actionExcecuter;
+        private readonly DALActionExecuterMiddleware actionExcecuter;
     }
 }

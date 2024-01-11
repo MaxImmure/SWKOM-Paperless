@@ -12,7 +12,7 @@ namespace PaperlessRestService.BusinessLogic.Tests
             IDocumentRepository documentRepository = new MockDocumentRepository();
             IDocumentTagRepository documentTagRepository = new MockDocumentTagRepository();
 
-            logicComponent = new DocumentCRUDLogic(documentTagRepository, documentRepository, new DataAccess.DALActionExcecuterMiddleware());
+            logicComponent = new DocumentCRUDLogic(documentTagRepository, documentRepository, new DataAccess.DALActionExecuterMiddleware());
         }
 
         [Fact]
@@ -36,13 +36,15 @@ namespace PaperlessRestService.BusinessLogic.Tests
         {
             bool result = logicComponent.AddTagToDocument(1, 0);
 
-            Assert.True(result);
+            Assert.False(result);
         }
 
         [Fact]
         public void AddTagToDocument_WithEmptyDocId()
         {
-            bool restult = logicComponent.AddTagToDocument(0, 1);
+            bool result = logicComponent.AddTagToDocument(0, 1);
+
+            Assert.False(result);
         }
 
         [Fact]

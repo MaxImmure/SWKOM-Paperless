@@ -203,7 +203,7 @@ namespace PaperlessRestService
 
             services.AddSingleton<AutoMigrateService>();
             services.AddSingleton<PaperlessDbContextFactory>();
-            services.AddSingleton<DALActionExcecuterMiddleware>();
+            services.AddSingleton<DALActionExecuterMiddleware>();
 
             services.Configure<QueueOptions>(Configuration.GetSection("RabbitMqOptions"));
             services.AddSingleton(sp => sp.GetRequiredService<IOptions<QueueOptions>>().Value);

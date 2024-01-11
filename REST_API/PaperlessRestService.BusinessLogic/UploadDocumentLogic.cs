@@ -13,7 +13,7 @@ namespace PaperlessRestService.BusinessLogic
     public class UploadDocumentLogic : IUploadDocumentLogic
     {
         public UploadDocumentLogic(
-            DALActionExcecuterMiddleware dalActionExecuter,
+            DALActionExecuterMiddleware dalActionExecuter,
             IQueueOCRJob job,
             IMinioRepository minio_connection,
             IDocumentRepository documentRepository)
@@ -78,7 +78,7 @@ namespace PaperlessRestService.BusinessLogic
             return true;
         }
 
-        private readonly DALActionExcecuterMiddleware dalActionExecuter;
+        private readonly DALActionExecuterMiddleware dalActionExecuter;
         private IQueueOCRJob rabbitmq_connection;
         private readonly IDocumentRepository documentRepository;
         private IMinioRepository minio;

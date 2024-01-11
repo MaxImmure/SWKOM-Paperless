@@ -8,7 +8,7 @@ namespace PaperlessRestService.BusinessLogic
 
     public class DocumentCRUDLogic : IDocumentCRUDLogic
     {
-        public DocumentCRUDLogic(IDocumentTagRepository documentTagRepository, IDocumentRepository documentRepository, DALActionExcecuterMiddleware dalExecuter)
+        public DocumentCRUDLogic(IDocumentTagRepository documentTagRepository, IDocumentRepository documentRepository, DALActionExecuterMiddleware dalExecuter)
         {
             this.documentTagRepository = documentTagRepository;
             this.documentRepository = documentRepository;
@@ -57,6 +57,6 @@ namespace PaperlessRestService.BusinessLogic
 
         private readonly IDocumentTagRepository documentTagRepository;
         private readonly IDocumentRepository documentRepository;
-        private readonly DALActionExcecuterMiddleware dalExecuter;
+        private readonly DALActionExecuterMiddleware dalExecuter;
     }
 }
