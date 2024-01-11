@@ -4,13 +4,6 @@ namespace PaperlessRestService.BusinessLogic.Tests
 {
     public class ElasticSearchAccessLoginTests
     {
-        public ElasticSearchAccessLoginTests()
-        {
-            logicComponent = new ElasticSearchAccessLogic();
-        }
 
-
-
-        IElasticSearchAccessLogic logicComponent;
     }
 }
