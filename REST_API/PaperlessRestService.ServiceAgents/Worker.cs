@@ -60,7 +60,7 @@ namespace PaperlessRestService.ServiceAgents
 
         public void HandleQueueMessage(object? sender, QueueReceivedEventArgs e)
         {
-            var fileStream = _minioAgent.GetFileAsync(e.Content).Result;
+            var fileStream = _minioAgent.GetFileAsync("paperless/"+e.Content).Result;
             var documentContent = _ocrAgent.OcrPdf(fileStream);
             Document doc = _dbAgent.Documents
                 .Include(d => d.TagsMapping)
