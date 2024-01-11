@@ -27,6 +27,7 @@ using System.Linq;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Elastic.Clients.Elasticsearch;
+using PaperlessRestService.BusinessLogic.DataAccess.ElasticSearch;
 
 namespace PaperlessRestService.Controllers
 {
@@ -48,6 +49,39 @@ namespace PaperlessRestService.Controllers
             this.errorHandler = errorHandler;
             this.actionExecuter = actionExecuter;
             this.logger = logger;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="query"></param>
+        /// <param name="ordering"></param>
+        /// <param name="tagsIdAll"></param>
+        /// <param name="documentTypeId"></param>
+        /// <param name="storagePathIdIn"></param>
+        /// <param name="correspondentId"></param>
+        /// <param name="truncateContent"></param>
+        /// <response code="200">Success</response>
+        [HttpGet]
+        [Route("/api/documents")]
+        [ValidateModelState]
+        [SwaggerOperation("GetDocuments")]
+        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2002), description: "Success")]
+        public virtual IActionResult GetDocuments([FromServices] ISearchDocumentLogic searchDocumentLogic, [FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string query, [FromQuery] string ordering, [FromQuery] List<int?> tagsIdAll, [FromQuery] int? documentTypeId, [FromQuery] int? storagePathIdIn, [FromQuery] int? correspondentId, [FromQuery] bool? truncateContent)
+        {
+            try
+            {
+                var result = searchDocumentLogic.SearchDocument(query);
+
+                return ControllerResponseFactory.CreateSuccessResponse(result);
+            }
+            catch (Exception ex)
+            {
+                errorHandler.HandleError(ex, logger);
+                return ControllerResponseFactory.CreateErrorResponse("Fehler bei der Suche");
+            }
         }
 
         /// <summary>
@@ -84,29 +118,6 @@ namespace PaperlessRestService.Controllers
             }
 
             return ControllerResponseFactory.CreateSuccessResponse(document);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="query"></param>
-        /// <param name="ordering"></param>
-        /// <param name="tagsIdAll"></param>
-        /// <param name="documentTypeId"></param>
-        /// <param name="correspondentId"></param>
-        /// <param name="truncateContent"></param>
-        /// <response code="200">Success</response>
-        [HttpGet]
-        [Route("/api/documents")]
-        [ValidateModelState]
-        [SwaggerOperation("GetDocuments")]
-        public virtual IActionResult GetDocuments([FromServices] ISearchDocumentLogic searchIndex, [FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string query, [FromQuery] string ordering, [FromQuery] List<int?> tagsIdAll, [FromQuery] int? documentTypeId, [FromQuery] int? correspondentId, [FromQuery] bool? truncateContent)
-        {
-            var result = searchIndex.SearchDocument(query);
-
-            return ControllerResponseFactory.CreateSuccessResponse(result);
         }
 
         /// <summary>
@@ -379,7 +390,7 @@ namespace PaperlessRestService.Controllers
         [ValidateModelState]
         [SwaggerOperation("GetDocumentThumb")]
         [SwaggerResponse(statusCode: 200, type: typeof(byte[]), description: "Success")]
-        public virtual IActionResult GetDocumentThumb([FromRoute][Required] int? id)
+        public virtual IActionResult GetDocumentThumb([FromRoute] [Required] int? id)
         {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200, default(byte[]));
@@ -387,39 +398,8 @@ namespace PaperlessRestService.Controllers
             exampleJson = "\"\"";
 
             var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<byte[]>(exampleJson)
-            : default(byte[]);            //TODO: Change the data returned
-            return new ObjectResult(example);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="query"></param>
-        /// <param name="ordering"></param>
-        /// <param name="tagsIdAll"></param>
-        /// <param name="documentTypeId"></param>
-        /// <param name="storagePathIdIn"></param>
-        /// <param name="correspondentId"></param>
-        /// <param name="truncateContent"></param>
-        /// <response code="200">Success</response>
-        [HttpGet]
-        [Route("/api/documents")]
-        [ValidateModelState]
-        [SwaggerOperation("GetDocuments")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse2002), description: "Success")]
-        public virtual IActionResult GetDocuments([FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string query, [FromQuery] string ordering, [FromQuery] List<int?> tagsIdAll, [FromQuery] int? documentTypeId, [FromQuery] int? storagePathIdIn, [FromQuery] int? correspondentId, [FromQuery] bool? truncateContent)
-        {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse2002));
-            string exampleJson = null;
-            exampleJson = "{\n  \"next\" : 6,\n  \"all\" : [ 5, 5 ],\n  \"previous\" : 1,\n  \"count\" : 0,\n  \"results\" : [ {\n    \"owner\" : 4,\n    \"user_can_change\" : true,\n    \"archive_serial_number\" : 2,\n    \"notes\" : [ {\n      \"note\" : \"note\",\n      \"created\" : \"created\",\n      \"document\" : 1,\n      \"id\" : 7,\n      \"user\" : 1\n    }, {\n      \"note\" : \"note\",\n      \"created\" : \"created\",\n      \"document\" : 1,\n      \"id\" : 7,\n      \"user\" : 1\n    } ],\n    \"added\" : \"added\",\n    \"created\" : \"created\",\n    \"title\" : \"title\",\n    \"content\" : \"content\",\n    \"tags\" : [ 3, 3 ],\n    \"storage_path\" : 9,\n    \"archived_file_name\" : \"archived_file_name\",\n    \"modified\" : \"modified\",\n    \"correspondent\" : 2,\n    \"original_file_name\" : \"original_file_name\",\n    \"id\" : 5,\n    \"created_date\" : \"created_date\",\n    \"document_type\" : 7\n  }, {\n    \"owner\" : 4,\n    \"user_can_change\" : true,\n    \"archive_serial_number\" : 2,\n    \"notes\" : [ {\n      \"note\" : \"note\",\n      \"created\" : \"created\",\n      \"document\" : 1,\n      \"id\" : 7,\n      \"user\" : 1\n    }, {\n      \"note\" : \"note\",\n      \"created\" : \"created\",\n      \"document\" : 1,\n      \"id\" : 7,\n      \"user\" : 1\n    } ],\n    \"added\" : \"added\",\n    \"created\" : \"created\",\n    \"title\" : \"title\",\n    \"content\" : \"content\",\n    \"tags\" : [ 3, 3 ],\n    \"storage_path\" : 9,\n    \"archived_file_name\" : \"archived_file_name\",\n    \"modified\" : \"modified\",\n    \"correspondent\" : 2,\n    \"original_file_name\" : \"original_file_name\",\n    \"id\" : 5,\n    \"created_date\" : \"created_date\",\n    \"document_type\" : 7\n  } ]\n}";
-
-            var example = exampleJson != null
-            ? JsonConvert.DeserializeObject<InlineResponse2002>(exampleJson)
-            : default(InlineResponse2002);            //TODO: Change the data returned
+                ? JsonConvert.DeserializeObject<byte[]>(exampleJson)
+                : default(byte[]); //TODO: Change the data returned
             return new ObjectResult(example);
         }
 

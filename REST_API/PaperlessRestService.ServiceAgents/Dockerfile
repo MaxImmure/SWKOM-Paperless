@@ -5,25 +5,21 @@ WORKDIR /app
 EXPOSE 8000
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
+WORKDIR /app
 COPY ["PaperlessRestService.ServiceAgents/PaperlessRestService.ServiceAgents.csproj", "PaperlessRestService.ServiceAgents/"]
 COPY ["PaperlessRestService.BusinessLogic.DataAccess/PaperlessRestService.BusinessLogic.DataAccess.csproj", "PaperlessRestService.BusinessLogic.DataAccess/"]
 COPY ["PaperlessRestService.BusinessLogic.Entities/PaperlessRestService.BusinessLogic.Entities.csproj", "PaperlessRestService.BusinessLogic.Entities/"]
 COPY ["PaperlessRestService.ServiceAgents.Interfaces/PaperlessRestService.ServiceAgents.Interfaces.csproj", "PaperlessRestService.ServiceAgents.Interfaces/"]
 RUN dotnet restore "PaperlessRestService.ServiceAgents/PaperlessRestService.ServiceAgents.csproj"
 COPY . .
-WORKDIR "/src/PaperlessRestService.ServiceAgents"
 
-RUN apt-get update -y && apt-get install -y libc6-dev libleptonica-dev
-RUN apt-get update -y && apt-get install -y wget gnupg2 apt-transport-https software-properties-common
+RUN apt-get update && apt-get install -y ghostscript libleptonica-dev libtesseract-dev libc6-dev
 
-RUN tee /etc/apt/sources.list.d/notesalexp.list<<EOF
-RUN echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null
-RUN wget -O - https://notesalexp.org/debian/alexp_key.asc | apt-key add - 
+WORKDIR /app/x64
+RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so libleptonica-1.82.0.so
+RUN ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.4.0.1 libtesseract50.so
 
-RUN apt-get update -y && apt-get install -y tesseract-ocr
-RUN apt-get update -y && apt-get install -y ghostscript
-
+WORKDIR /app/PaperlessRestService.ServiceAgents/
 RUN dotnet build "PaperlessRestService.ServiceAgents.csproj" -c Release -o /app/build
 
 FROM build AS publish

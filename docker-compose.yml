@@ -127,7 +127,7 @@ services:
       - "xpack.security.enrollment.enabled=false"
     ports:
       - 9200:9200
-      #- 9300:9300 # custom binary protocol used for communications between nodes in a cluster
+      - 9300:9300 # custom binary protocol used for communications between nodes in a cluster
     networks:
       - backend-nw
     volumes:

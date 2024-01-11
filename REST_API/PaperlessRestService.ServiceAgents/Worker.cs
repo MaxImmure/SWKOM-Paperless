@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using System.Threading;
 using Elastic.Clients.Elasticsearch;
 using Microsoft.EntityFrameworkCore;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
@@ -67,7 +68,6 @@ namespace PaperlessRestService.ServiceAgents
                 .Where(d => d.Original_File_Name == e.Content)
                 .First();
             doc.Content = documentContent;
-            doc.Modified = DateTime.Now;
             _elasticAgent.AddDocumentAsync(doc);
             _dbAgent.Documents.Update(doc);
             _dbAgent.SaveChanges();

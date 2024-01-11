@@ -29,6 +29,13 @@ namespace PaperlessRestService.BusinessLogic.Repositories
             return found;
         }
 
+        public IEnumerable<Document> GetAllDocuments()
+        {
+            using PaperlessDbContext dbContext = dbContextFactory.Create();
+            var documents = dbContext.Documents.ToList();
+            return documents;
+        }
+
         public bool DeleteDocument(int id)
         {
             using PaperlessDbContext dbContext = dbContextFactory.Create();
