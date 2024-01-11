@@ -6,7 +6,9 @@ using PaperlessRestService.BusinessLogic.DataAccess.MinIO;
 using PaperlessRestService.BusinessLogic.DataAccess.Options;
 using PaperlessRestService.ServiceAgents;
 using PaperlessRestService.ServiceAgents.Interfaces;
+using PaperlessRestService.ServiceAgents.Interfaces.OCRLibrary;
 using PaperlessRestService.ServiceAgents.OCR;
+using PaperlessRestService.ServiceAgents.OCRLibrary;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((hostContext, services) =>
@@ -18,6 +20,9 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<IDbConnectionStringContainer, DbConnectionStringContainer>();
 
         services.AddSingleton<PaperlessDbContextFactory>();
+
+        services.AddSingleton(sp => sp.GetRequiredService<IOptions<OcrOptions>>().Value);
+        services.AddSingleton<IOcrServiceArgent, OcrServiceArgent>();
 
         services.Configure<QueueOptions>(hostContext.Configuration.GetSection("RabbitMqOptions"));
         services.AddSingleton(sp => sp.GetRequiredService<IOptions<QueueOptions>>().Value);
