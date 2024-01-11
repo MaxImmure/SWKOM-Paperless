@@ -6,6 +6,7 @@ using PaperlessRestService.BusinessLogic.DataAccess.ElasticSearch;
 using PaperlessRestService.BusinessLogic.DataAccess.MinIO;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic.Entities;
+using PaperlessRestService.ServiceAgents.Interfaces;
 using PaperlessRestService.ServiceAgents.Interfaces.OCRLibrary;
 
 namespace PaperlessRestService.ServiceAgents
