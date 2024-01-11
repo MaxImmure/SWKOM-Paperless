@@ -32,7 +32,7 @@ namespace PaperlessRestService.BusinessLogic.Repositories
         public IEnumerable<Document> GetAllDocuments()
         {
             using PaperlessDbContext dbContext = dbContextFactory.Create();
-            var documents = dbContext.Documents.ToList();
+            var documents = dbContext.Documents.Include(d => d.TagsMapping).ToList();
             return documents;
         }
 
