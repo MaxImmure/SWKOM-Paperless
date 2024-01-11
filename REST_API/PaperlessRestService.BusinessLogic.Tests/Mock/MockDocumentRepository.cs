@@ -15,6 +15,12 @@ namespace PaperlessRestService.BusinessLogic.Tests.Mock
             return true;
         }
 
+
+        public IEnumerable<Document> GetAllDocuments()
+        {
+            return statischeDaten;
+        }
+
         public Document GetDocument(int id)
         {
             return statischeDaten.FirstOrDefault(x => x.Id == id);
