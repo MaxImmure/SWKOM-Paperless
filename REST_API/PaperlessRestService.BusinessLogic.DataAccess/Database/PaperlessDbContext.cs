@@ -18,6 +18,9 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
         public DbSet<PermissionGroupMapping> PermissionGroupMappings { get; set; }
         public DbSet<PermissionName> PermissionNames { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<DocumentTagMapping> DocumentTagMappings { get; set; }
+
         public PaperlessDbContext(DbContextOptions<PaperlessDbContext> options)
             : base(options)
         { }
@@ -34,6 +37,9 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
             ConfigureGroup(modelBuilder);
             ConfigureGroupUserMapping(modelBuilder);
             ConfigureUser(modelBuilder);
+
+            ConfigureTags(modelBuilder);
+            ConfigureDocumentTagMapping(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -67,6 +73,37 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
                 .HasMany<Notes>()
                 .WithOne()
                 .HasForeignKey(n => n.DocumentId);
+        }
+
+        private void ConfigureTags(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Tag>()
+                .HasKey(t => t.Id);
+
+            modelBuilder.Entity<Tag>()
+              .Property(e => e.Id)
+              .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Tag>()
+                .HasOne(t => t.Owner)
+                .WithMany()
+                .HasForeignKey(t => t.OwnerId);
+        }
+
+        private void ConfigureDocumentTagMapping(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DocumentTagMapping>()
+                .HasKey(d => new { d.DocumentId, d.TagId });
+
+            modelBuilder.Entity<DocumentTagMapping>()
+                .HasOne<Document>()
+                .WithMany(d => d.TagsMapping)
+                .HasForeignKey(d => d.DocumentId);
+
+            modelBuilder.Entity<DocumentTagMapping>()
+                .HasOne<Tag>()
+                .WithMany()
+                .HasForeignKey(d => d.TagId);
         }
 
         private void ConfigureDocumentTyp(ModelBuilder modelBuilder)

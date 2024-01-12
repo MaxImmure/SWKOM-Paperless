@@ -15,7 +15,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperlessRestService.Busine
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock Server", "MockREST_API\Mock Server.csproj", "{E24ED009-5677-4CD9-B190-92C88C03EC66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaperlessRestService.BusinessLogic.DataAccess", "PaperlessRestService.BusinessLogic.DataAccess\PaperlessRestService.BusinessLogic.DataAccess.csproj", "{8F45BB42-3E44-4218-8F82-10F0C741EA40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperlessRestService.BusinessLogic.DataAccess", "PaperlessRestService.BusinessLogic.DataAccess\PaperlessRestService.BusinessLogic.DataAccess.csproj", "{8F45BB42-3E44-4218-8F82-10F0C741EA40}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperlessRestService.ServiceAgents.Interfaces", "PaperlessRestService.ServiceAgents.Interfaces\PaperlessRestService.ServiceAgents.Interfaces.csproj", "{691966A1-0AB3-45BF-BCEB-F4614519CB5F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperlessRestService.ServiceAgents.Tests", "PaperlessRestService.ServiceAgents.Tests\PaperlessRestService.ServiceAgents.Tests.csproj", "{9C16F07A-85E5-4BEE-B7D4-0CE64FE8F05A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaperlessRestService.ServiceAgents", "PaperlessRestService.ServiceAgents\PaperlessRestService.ServiceAgents.csproj", "{1FCDF67E-831B-405D-B232-39F475FEE85F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +57,18 @@ Global
 		{8F45BB42-3E44-4218-8F82-10F0C741EA40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F45BB42-3E44-4218-8F82-10F0C741EA40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F45BB42-3E44-4218-8F82-10F0C741EA40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{691966A1-0AB3-45BF-BCEB-F4614519CB5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{691966A1-0AB3-45BF-BCEB-F4614519CB5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{691966A1-0AB3-45BF-BCEB-F4614519CB5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{691966A1-0AB3-45BF-BCEB-F4614519CB5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C16F07A-85E5-4BEE-B7D4-0CE64FE8F05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C16F07A-85E5-4BEE-B7D4-0CE64FE8F05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C16F07A-85E5-4BEE-B7D4-0CE64FE8F05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C16F07A-85E5-4BEE-B7D4-0CE64FE8F05A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FCDF67E-831B-405D-B232-39F475FEE85F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FCDF67E-831B-405D-B232-39F475FEE85F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FCDF67E-831B-405D-B232-39F475FEE85F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FCDF67E-831B-405D-B232-39F475FEE85F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

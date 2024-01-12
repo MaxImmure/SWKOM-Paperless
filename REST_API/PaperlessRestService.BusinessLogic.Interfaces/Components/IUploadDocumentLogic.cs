@@ -10,7 +10,5 @@ namespace PaperlessRestService.BusinessLogic
     public interface IUploadDocumentLogic
     {
         public bool UploadDocument(Document document);
-        public bool QueueDocument(Document document, Guid id);
-        public bool ExportDocumentToFileStorage(Document document, Guid id);
     }
 }

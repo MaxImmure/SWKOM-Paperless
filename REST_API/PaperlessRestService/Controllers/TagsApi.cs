@@ -18,6 +18,11 @@ using PaperlessRestService.Attributes;
 
 using Microsoft.AspNetCore.Authorization;
 using PaperlessRestService.Models;
+using PaperlessRestService.BusinessLogic.DataAccess.Repositories;
+using PaperlessRestService.BusinessLogic.Interfaces.Components;
+using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.Entities;
+using System.Linq;
 
 namespace PaperlessRestService.Controllers
 { 
@@ -26,7 +31,16 @@ namespace PaperlessRestService.Controllers
     /// </summary>
     [ApiController]
     public class TagsApiController : ControllerBase
-    { 
+    {
+        private readonly ITagCRUDLogic tagLogic;
+        private readonly BLActionExecuterMiddleware actionExecuter;
+
+        public TagsApiController(ITagCRUDLogic tagLogic, BLActionExecuterMiddleware actionExecuter)
+        {
+            this.tagLogic = tagLogic;
+            this.actionExecuter = actionExecuter;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -38,16 +52,35 @@ namespace PaperlessRestService.Controllers
         [SwaggerOperation("CreateTag")]
         [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20017), description: "Success")]
         public virtual IActionResult CreateTag([FromBody]ApiTagsBody body)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20017));
-            string exampleJson = null;
-            exampleJson = "{\n  \"owner\" : 1,\n  \"matching_algorithm\" : 6,\n  \"user_can_change\" : true,\n  \"color\" : \"color\",\n  \"is_insensitive\" : true,\n  \"name\" : \"name\",\n  \"match\" : \"match\",\n  \"id\" : 0,\n  \"text_color\" : \"text_color\",\n  \"is_inbox_tag\" : true,\n  \"slug\" : \"slug\"\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20017>(exampleJson)
-                        : default(InlineResponse20017);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        {
+            Tag tag = new()
+            {
+                Id = 0, // gets auto incremented on insert
+                Color = body.Color,
+                IsInboxTag = body.IsInboxTag ?? false,
+                IsInsensitive = body.IsInsensitive,
+                Match = body.Match,
+                MatchingAlgorithm = body.MatchingAlgorithm,
+                Name = body.Name,
+                OwnerId = null // hack: there are no users in the database so we need to set the foreign key to null
+                //OwnerId = body.Owner
+            };
+
+            // ToDo validation
+
+            bool success = actionExecuter.Execute<bool>(() =>
+            {
+                return tagLogic.Create(tag);
+            });
+
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ControllerResponseFactory.CreateErrorResponse("There was an error inserting the tag");
+            }
         }
 
         /// <summary>
@@ -60,11 +93,25 @@ namespace PaperlessRestService.Controllers
         [ValidateModelState]
         [SwaggerOperation("DeleteTag")]
         public virtual IActionResult DeleteTag([FromRoute][Required]int? id)
-        { 
-            //TODO: Uncomment the next line to return response 204 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(204);
+        {
+            if (!id.HasValue || id.Value == 0)
+            {
+                return ControllerResponseFactory.CreateBadRequestResponse("The Id may not be empty or null");
+            }
 
-            throw new NotImplementedException();
+            bool success = actionExecuter.Execute<bool>(() =>
+            {
+                return tagLogic.Delete(id.Value);
+            });
+
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return ControllerResponseFactory.CreateErrorResponse("There was an error deleting the tag");
+            }
         }
 
         /// <summary>
@@ -77,18 +124,34 @@ namespace PaperlessRestService.Controllers
         [Route("/api/tags")]
         [ValidateModelState]
         [SwaggerOperation("GetTags")]
-        [SwaggerResponse(statusCode: 200, type: typeof(InlineResponse20016), description: "Success")]
+        [SwaggerResponse(statusCode: 200, type: typeof(GetTagsResponse), description: "Success")]
         public virtual IActionResult GetTags([FromQuery]int? page, [FromQuery]bool? fullPerms)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(InlineResponse20016));
-            string exampleJson = null;
-            exampleJson = "{\n  \"next\" : 6,\n  \"all\" : [ 5, 5 ],\n  \"previous\" : 1,\n  \"count\" : 0,\n  \"results\" : [ {\n    \"owner\" : 9,\n    \"matching_algorithm\" : 2,\n    \"document_count\" : 7,\n    \"color\" : \"color\",\n    \"is_insensitive\" : true,\n    \"permissions\" : {\n      \"view\" : {\n        \"groups\" : [ \"\", \"\" ],\n        \"users\" : [ \"\", \"\" ]\n      }\n    },\n    \"name\" : \"name\",\n    \"match\" : \"match\",\n    \"id\" : 5,\n    \"text_color\" : \"text_color\",\n    \"is_inbox_tag\" : true,\n    \"slug\" : \"slug\"\n  }, {\n    \"owner\" : 9,\n    \"matching_algorithm\" : 2,\n    \"document_count\" : 7,\n    \"color\" : \"color\",\n    \"is_insensitive\" : true,\n    \"permissions\" : {\n      \"view\" : {\n        \"groups\" : [ \"\", \"\" ],\n        \"users\" : [ \"\", \"\" ]\n      }\n    },\n    \"name\" : \"name\",\n    \"match\" : \"match\",\n    \"id\" : 5,\n    \"text_color\" : \"text_color\",\n    \"is_inbox_tag\" : true,\n    \"slug\" : \"slug\"\n  } ]\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<InlineResponse20016>(exampleJson)
-                        : default(InlineResponse20016);            //TODO: Change the data returned
-            return new ObjectResult(example);
+        {
+            List<Tag> tags = actionExecuter.Execute<List<Tag>>(() =>
+            {
+                return tagLogic.GetTags();
+            });
+
+            GetTagsResponse response = new GetTagsResponse()
+            {
+                Results = tags.Select( t => new InlineResponse20016Results()
+                {
+                    Color = t.Color,
+                    Id = t.Id,
+                    IsInboxTag = t.IsInboxTag,
+                    IsInsensitive = t.IsInsensitive,
+                    Match = t.Match,
+                    MatchingAlgorithm = t.MatchingAlgorithm,
+                    Name = t.Name,
+                    Owner = t.OwnerId,
+                    Slug = string.Empty,
+                    Permissions = null,
+                    TextColor = "black",
+                    DocumentCount = null
+                }).ToList()
+            };
+
+            return new ObjectResult(response);
         }
 
         /// <summary>

@@ -31,58 +31,58 @@ public class WebSocketController : ControllerBase
 
     private static async Task Echo(WebSocket webSocket)
     {
-        var jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
-        {
-            filename = "test.pdf",
-            task_id = "123",
-            current_progress = 100,
-            max_progress = 100,
-            status = ConsumerState.SUCCESS,
-            message = "test",
-            document_id = 1
-        });
+        //var jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
+        //{
+        //    filename = "test.pdf",
+        //    task_id = "123",
+        //    current_progress = 100,
+        //    max_progress = 100,
+        //    status = ConsumerState.SUCCESS,
+        //    message = "test",
+        //    document_id = 1
+        //});
 
-        await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
+        //await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
 
-        jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
-        {
-            filename = "test2.pdf",
-            task_id = "124",
-            current_progress = 3,
-            max_progress = 3,
-            status = ConsumerState.FAILED,
-            message = "test",
-            document_id = 2
-        });
+        //jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
+        //{
+        //    filename = "test2.pdf",
+        //    task_id = "124",
+        //    current_progress = 3,
+        //    max_progress = 3,
+        //    status = ConsumerState.FAILED,
+        //    message = "test",
+        //    document_id = 2
+        //});
 
-        await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
+        //await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
 
-        jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
-        {
-            filename = "test3.pdf",
-            task_id = "125",
-            current_progress = 70,
-            max_progress = 100,
-            status = ConsumerState.PROCESSING,
-            message = "SWKOM is great!",
-            document_id = 2
-        });
+        //jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
+        //{
+        //    filename = "test3.pdf",
+        //    task_id = "125",
+        //    current_progress = 70,
+        //    max_progress = 100,
+        //    status = ConsumerState.PROCESSING,
+        //    message = "SWKOM is great!",
+        //    document_id = 2
+        //});
 
-        await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
+        //await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
 
-        jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
-        {
-            filename = "test4.pdf",
-            task_id = "1",
-            current_progress = 0,
-            max_progress = 2,
-            // STARTING; SUCCESS, FAILED, PROCESSING
-            status = ConsumerState.STARTING,
-            message = "STARTING NOW",
-            document_id = 2
-        });
+        //jsonString = JsonSerializer.Serialize(new WebsocketConsumerStatusMessage
+        //{
+        //    filename = "test4.pdf",
+        //    task_id = "1",
+        //    current_progress = 0,
+        //    max_progress = 2,
+        //    // STARTING; SUCCESS, FAILED, PROCESSING
+        //    status = ConsumerState.STARTING,
+        //    message = "STARTING NOW",
+        //    document_id = 2
+        //});
 
-        await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
+        //await webSocket.SendAsync(Encoding.UTF8.GetBytes(jsonString), WebSocketMessageType.Text, true, CancellationToken.None);
 
         // var buffer = new byte[1024 * 4];
         // var receiveResult = await webSocket.ReceiveAsync(

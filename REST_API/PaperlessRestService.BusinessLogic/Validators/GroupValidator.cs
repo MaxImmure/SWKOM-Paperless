@@ -7,7 +7,8 @@ namespace PaperlessRestService.BusinessLogic.Validators
     {
         public GroupValidator()
         {
-            // no rules yet
+            RuleFor(g => g.Id).NotEmpty();
+            RuleFor(g => g.Name).NotNull().NotEmpty();
         }
     }
 }

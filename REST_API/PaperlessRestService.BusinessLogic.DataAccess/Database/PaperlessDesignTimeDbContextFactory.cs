@@ -9,7 +9,7 @@ namespace PaperlessRestService.BusinessLogic.DataAccess.Database
         {
             var optionsBuilder = new DbContextOptionsBuilder<PaperlessDbContext>();
 
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Paperless;Username=postgres;Password=postgres");
+            optionsBuilder.UseNpgsql(args[0]);
 
             return new PaperlessDbContext(optionsBuilder.Options);
         }

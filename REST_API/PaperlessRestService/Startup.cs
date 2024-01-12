@@ -23,11 +23,20 @@ using PaperlessRestService.BusinessLogic.Validators;
 using PaperlessRestService.Filters;
 using System;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PaperlessRestService.Queue;
 using PaperlessRestService.BusinessLogic.DataAccess.Database;
 using PaperlessRestService.BusinessLogic.DataAccess.RabbitMQ;
 using PaperlessRestService.BusinessLogic;
+using PaperlessRestService.BusinessLogic.DataAccess.ElasticSearch;
+using PaperlessRestService.BusinessLogic.DataAccess.MinIO;
+using PaperlessRestService.BusinessLogic.Repositories;
+using PaperlessRestService.Logging;
+using PaperlessRestService.BusinessLogic.ExceptionHandling;
+using PaperlessRestService.BusinessLogic.DataAccess.Repositories;
+using PaperlessRestService.BusinessLogic.Interfaces.Components;
+using PaperlessRestService.BusinessLogic.DataAccess.Options;
 
 namespace PaperlessRestService
 {
@@ -97,7 +106,6 @@ namespace PaperlessRestService
                 });
 
             services.AddAutoMapper(typeof(DTOMapperProfile));
-
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -108,8 +116,13 @@ namespace PaperlessRestService
                 });
             });
 
+            services.AddLogging();
+
             RegisterValidators(services);
             RegisterDAL(services);
+            RegisterBusinsessLogic(services);
+
+            services.AddSingleton<IErrorHandler, ErrorHandler>();
         }
 
         /// <summary>
@@ -121,7 +134,7 @@ namespace PaperlessRestService
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseRouting();
-
+            
             //TODO: Uncomment this if you need wwwroot folder
             // app.UseStaticFiles();
 
@@ -129,6 +142,7 @@ namespace PaperlessRestService
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseWebSockets();
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -142,6 +156,8 @@ namespace PaperlessRestService
 
             //TODO: Use Https Redirection
             // app.UseHttpsRedirection();
+
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.UseCors();
             app.UseEndpoints(endpoints =>
@@ -175,25 +191,49 @@ namespace PaperlessRestService
             services.AddScoped<IValidator<Group>, GroupValidator>();
             services.AddScoped<IValidator<Notes>, NotesValidator>();
             services.AddScoped<IValidator<User>, UserValidator>();
+
+            services.AddScoped<IUploadDocumentLogic, UploadDocumentLogic>();
         }
 
         private void RegisterDAL(IServiceCollection services)
         {
-            services.AddSingleton<IDbConnectionStringContainer>(new DbConnectionStringContainer(Configuration["DB_ConnectionString"]));
+            services.Configure<DatabaseOptions>(Configuration.GetSection("DatabaseOptions"));
+            services.AddSingleton<DatabaseOptions>(sp => sp.GetRequiredService<IOptions<DatabaseOptions>>().Value);
+            services.AddSingleton<IDbConnectionStringContainer, DbConnectionStringContainer>();
 
             services.AddSingleton<AutoMigrateService>();
             services.AddSingleton<PaperlessDbContextFactory>();
+            services.AddSingleton<DALActionExecuterMiddleware>();
 
-            var rabbitmq = new RabbitmqQueueOCRJob(new OptionsWrapper<RabbitmqQueueOptions>(new RabbitmqQueueOptions(
-                ConnectionString: Configuration["RABBITMQ_ConnectionString"],
-                QueueName: Configuration["RABBITMQ_QueueName"])));
-            services.AddSingleton<RabbitmqQueueOCRJob>(rabbitmq);
+            services.Configure<QueueOptions>(Configuration.GetSection("RabbitMqOptions"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<QueueOptions>>().Value);
+            services.AddSingleton<IQueueOCRJob, QueueOcrJob>();
 
-            //UploadDocumentLogic udl = new UploadDocumentLogic(services.BuildServiceProvider());
-            //Document d = new Document();
-            //d.Title = "test124";
-            //udl.UploadDocument(d);
+            services.Configure<MinioOptions>(Configuration.GetSection("MinioOptions"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<MinioOptions>>().Value);
+            services.AddSingleton<IMinioRepository, MinioRepository>();
 
+            services.Configure<ElasticSearchOptions>(Configuration.GetSection("ElasticSearchOptions"));
+            services.AddSingleton(sp => sp.GetRequiredService<IOptions<ElasticSearchOptions>>().Value);
+            services.AddSingleton<ISearchIndex, ElasticSearchIndex>();
+
+            RegisterRepositories(services);
+        }
+
+        private void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<IDocumentRepository, DocumentRepository>();
+            services.AddSingleton<ITagRepository, TagRepository>();
+            services.AddSingleton<IDocumentTagRepository, DocumentTagRepository>();
+        }
+
+        private void RegisterBusinsessLogic(IServiceCollection services)
+        {
+            services.AddSingleton<BLActionExecuterMiddleware>();
+            services.AddSingleton<IUploadDocumentLogic, UploadDocumentLogic>();
+            services.AddSingleton<IDocumentCRUDLogic, DocumentCRUDLogic>();
+            services.AddSingleton<ISearchDocumentLogic,  SearchDocumentLogic>();
+            services.AddSingleton<ITagCRUDLogic, TagCRUDLogic>();
         }
     }
 }

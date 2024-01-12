@@ -1,0 +1,10 @@
+Drop Table public."GroupUserMappings";
+Drop Table public."Notes";
+Drop Table public."PermissionGroupMappings";
+Drop Table public."Documents";
+Drop Table public."Groups";
+Drop Table public."PermissionNames";
+drop Table public."Correspondents";
+drop table public."DocumentTypes";
+drop table public."Tags";
+drop table public."Users";
