@@ -16,8 +16,8 @@ COPY . .
 RUN apt-get update && apt-get install -y ghostscript libleptonica-dev libtesseract-dev libc6-dev
 
 WORKDIR /app/x64
-RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so libleptonica-1.82.0.so
-RUN ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.4.0.1 libtesseract50.so
+RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so.5 libleptonica-1.82.0.so
+RUN ln -s /usr/lib/x86_64-linux-gnu/libtesseract.so.5 libtesseract50.so
 
 WORKDIR /app/PaperlessRestService.ServiceAgents/
 RUN dotnet build "PaperlessRestService.ServiceAgents.csproj" -c Release -o /app/build
