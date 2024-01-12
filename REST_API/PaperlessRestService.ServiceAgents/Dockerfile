@@ -13,7 +13,7 @@ COPY ["PaperlessRestService.ServiceAgents.Interfaces/PaperlessRestService.Servic
 RUN dotnet restore "PaperlessRestService.ServiceAgents/PaperlessRestService.ServiceAgents.csproj"
 COPY . .
 
-RUN apt-get update && apt-get install -y ghostscript libleptonica-dev libtesseract-dev libc6-dev tesseract-ocr
+RUN apt-get update && apt-get install -y ghostscript libleptonica-dev libtesseract-dev libc6-dev
 
 WORKDIR /app/x64
 RUN ln -s /usr/lib/x86_64-linux-gnu/liblept.so libleptonica-1.82.0.so
